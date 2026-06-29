@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-cream text-charcoal font-sans antialiased; }
+  h1, h2, h3, h4 { @apply font-serif; }
+}
+
+@layer components {
+  /* ── Buttons ── */
+  .btn-coral {
+    @apply inline-flex items-center gap-2.5 bg-coral text-white font-medium text-sm
+           px-7 py-3.5 rounded-full transition-all duration-300
+           hover:shadow-hover hover:scale-[1.02] active:scale-95;
+  }
+  .btn-lime {
+    @apply inline-flex items-center gap-2.5 bg-lime text-olive font-semibold text-sm
+           px-7 py-3.5 rounded-full transition-all duration-300
+           hover:shadow-hover hover:scale-[1.02] active:scale-95;
+  }
+  .btn-outline-cream {
+    @apply inline-flex items-center gap-2.5 border-2 border-cream/60 text-cream font-medium text-sm
+           px-7 py-3.5 rounded-full transition-all duration-300
+           hover:border-cream hover:bg-cream/10 active:scale-95;
+  }
+  .btn-outline-olive {
+    @apply inline-flex items-center gap-2.5 border-2 border-olive text-olive font-medium text-sm
+           px-7 py-3.5 rounded-full transition-all duration-300
+           hover:bg-olive hover:text-cream active:scale-95;
+  }
+  .btn-circle {
+    @apply w-12 h-12 rounded-full border-2 border-charcoal/30 flex items-center justify-center
+           text-charcoal transition-all duration-300 hover:border-coral hover:text-coral;
+  }
+
+  /* ── Cards ── */
+  .card-white {
+    @apply bg-white rounded-3xl p-6 shadow-card transition-all duration-300 hover:shadow-hover;
+  }
+  .card-cream {
+    @apply bg-cream rounded-3xl p-6 shadow-card;
+  }
+  .card-olive {
+    @apply bg-olive-light rounded-3xl p-6;
+  }
+
+  /* ── Tags ── */
+  .tag {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium tracking-widest uppercase;
+  }
+  .tag-coral { @apply tag text-coral; }
+  .tag-lime  { @apply tag text-lime; }
+  .tag-muted { @apply tag text-warm-gray; }
+
+  /* ── Section title ── */
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal leading-[1.1];
+  }
+  .section-title-cream {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl text-cream leading-[1.1];
+  }
+
+  /* ── Scroll animation ── */
+  .fade-up {
+    @apply opacity-0 translate-y-8 transition-all duration-700;
+  }
+  .fade-up.visible {
+    @apply opacity-100 translate-y-0;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #F5F0E4; }
+::-webkit-scrollbar-thumb { background: #D4E840; border-radius: 10px; }

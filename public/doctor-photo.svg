@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- Background -->
+  <rect width="400" height="500" fill="#F4E4D4"/>
+  <rect width="400" height="500" fill="url(#bgGrad)"/>
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F4E4D4"/>
+      <stop offset="100%" stop-color="#E8D0BB"/>
+    </linearGradient>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F0F0F0"/>
+    </linearGradient>
+    <clipPath id="circle">
+      <circle cx="200" cy="155" r="80"/>
+    </clipPath>
+  </defs>
+
+  <!-- Decorative dots -->
+  <circle cx="30" cy="60" r="4" fill="#D4A574" opacity="0.3"/>
+  <circle cx="55" cy="40" r="2.5" fill="#D4A574" opacity="0.2"/>
+  <circle cx="370" cy="80" r="4" fill="#8B7355" opacity="0.2"/>
+  <circle cx="350" cy="55" r="2.5" fill="#8B7355" opacity="0.15"/>
+
+  <!-- Torso / white coat -->
+  <path d="M80 500 L80 330 Q80 290 120 275 L155 262 L200 285 L245 262 L280 275 Q320 290 320 330 L320 500 Z"
+        fill="url(#bodyGrad)" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- Collar / scrubs -->
+  <path d="M155 262 L200 300 L245 262 L235 255 L200 278 L165 255 Z"
+        fill="#7BA987" opacity="0.9"/>
+
+  <!-- Stethoscope -->
+  <path d="M155 295 Q145 340 150 370 Q155 395 175 400 Q195 405 195 385 L195 375"
+        stroke="#8B7355" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <circle cx="195" cy="372" r="9" fill="#8B7355" opacity="0.8"/>
+  <path d="M155 295 Q152 310 155 320" stroke="#8B7355" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Name badge -->
+  <rect x="210" y="305" width="75" height="42" rx="6" fill="white" stroke="#E8D0BB" stroke-width="1"/>
+  <rect x="218" y="314" width="40" height="4" rx="2" fill="#D4A574" opacity="0.6"/>
+  <rect x="218" y="323" width="55" height="3" rx="1.5" fill="#CCCCCC" opacity="0.5"/>
+  <rect x="218" y="332" width="45" height="3" rx="1.5" fill="#CCCCCC" opacity="0.4"/>
+
+  <!-- Head -->
+  <circle cx="200" cy="155" r="80" fill="#F5DEC8"/>
+
+  <!-- Hair -->
+  <path d="M128 135 Q130 85 200 78 Q270 78 272 135 Q265 95 200 92 Q135 92 128 135Z"
+        fill="#6B4C3B"/>
+  <path d="M128 135 Q122 160 130 175 Q125 155 128 135Z" fill="#6B4C3B"/>
+  <path d="M272 135 Q278 160 270 175 Q275 155 272 135Z" fill="#6B4C3B"/>
+  <!-- Bun / updo hint -->
+  <ellipse cx="200" cy="82" rx="28" ry="16" fill="#6B4C3B"/>
+
+  <!-- Face -->
+  <!-- Eyes -->
+  <ellipse cx="178" cy="148" rx="9" ry="10" fill="white"/>
+  <ellipse cx="222" cy="148" rx="9" ry="10" fill="white"/>
+  <circle cx="180" cy="149" r="6" fill="#5C3D2E"/>
+  <circle cx="224" cy="149" r="6" fill="#5C3D2E"/>
+  <circle cx="182" cy="147" r="2.5" fill="#000000" opacity="0.8"/>
+  <circle cx="226" cy="147" r="2.5" fill="#000000" opacity="0.8"/>
+  <circle cx="184" cy="145" r="1.2" fill="white"/>
+  <circle cx="228" cy="145" r="1.2" fill="white"/>
+
+  <!-- Eyebrows -->
+  <path d="M168 135 Q179 130 190 135" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M210 135 Q221 130 232 135" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Nose -->
+  <path d="M197 155 Q194 170 190 175 Q200 178 210 175 Q206 170 203 155"
+        fill="#E8C4A0" stroke="#D4A878" stroke-width="0.8"/>
+
+  <!-- Smile -->
+  <path d="M184 190 Q200 202 216 190" stroke="#C47B5A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M185 191 Q200 200 215 191" fill="#E87A6A" opacity="0.4"/>
+
+  <!-- Cheeks blush -->
+  <ellipse cx="162" cy="178" rx="14" ry="9" fill="#F4A0A0" opacity="0.2"/>
+  <ellipse cx="238" cy="178" rx="14" ry="9" fill="#F4A0A0" opacity="0.2"/>
+
+  <!-- Ears -->
+  <ellipse cx="122" cy="160" rx="10" ry="14" fill="#F5DEC8"/>
+  <ellipse cx="278" cy="160" rx="10" ry="14" fill="#F5DEC8"/>
+
+  <!-- Earring hints -->
+  <circle cx="122" cy="170" r="3.5" fill="#D4A574" opacity="0.7"/>
+  <circle cx="278" cy="170" r="3.5" fill="#D4A574" opacity="0.7"/>
+
+  <!-- Neck -->
+  <rect x="186" y="228" width="28" height="38" rx="8" fill="#F5DEC8"/>
+
+  <!-- Bottom decorative leaf -->
+  <ellipse cx="60" cy="470" rx="35" ry="18" fill="#7BA987" opacity="0.15" transform="rotate(-30 60 470)"/>
+  <ellipse cx="340" cy="460" rx="30" ry="15" fill="#8B7355" opacity="0.12" transform="rotate(20 340 460)"/>
+</svg>
