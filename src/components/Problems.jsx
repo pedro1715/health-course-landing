@@ -25,7 +25,7 @@ export default function Problems() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Editorial heading row */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-end mb-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-end mb-10 lg:mb-14">
           <div ref={ref} className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <p className="tag-coral mb-4">Чи знайомо?</p>
             <h2 className="font-serif text-5xl lg:text-6xl xl:text-7xl font-semibold text-charcoal leading-[1.05]">
@@ -46,7 +46,7 @@ export default function Problems() {
         </div>
 
         {/* Bento grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {PAINS.map((p, i) => (
             <div key={p.n}
                  className={`rounded-3xl p-7 transition-all duration-700 hover:shadow-hover

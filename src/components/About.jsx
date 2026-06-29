@@ -52,30 +52,31 @@ export default function About() {
         <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
 
           {/* Photo collage */}
-          <div className="relative">
+          <div className="relative mx-auto max-w-xs lg:max-w-none lg:mx-0 pb-6 lg:pb-0">
             {/* Main photo */}
-            <div className="rounded-3xl overflow-hidden aspect-[3/4] max-w-xs shadow-hover">
+            <div className="rounded-3xl overflow-hidden aspect-[3/4] shadow-hover">
               <img src="/doctor-photo.svg" alt="Юлія Негрієнко"
                    className="w-full h-full object-cover object-top"/>
             </div>
             {/* Experience float */}
-            <div className="absolute top-5 -right-4 lg:-right-8 bg-lime rounded-2xl p-4 shadow-float text-center">
-              <div className="font-serif text-3xl font-bold text-olive">12</div>
-              <div className="text-olive/70 text-xs leading-tight">років<br/>практики</div>
+            <div className="absolute top-4 -right-3 sm:-right-6 bg-lime rounded-2xl p-3 sm:p-4 shadow-float text-center">
+              <div className="font-serif text-2xl sm:text-3xl font-bold text-olive">12</div>
+              <div className="text-olive/70 text-[10px] sm:text-xs leading-tight">років<br/>практики</div>
             </div>
             {/* Therapy float */}
-            <div className="absolute -bottom-4 right-4 bg-white rounded-2xl px-4 py-3 shadow-float
-                            flex items-center gap-2.5">
-              <span className="text-2xl">🌿</span>
+            <div className="absolute bottom-8 lg:bottom-2 right-0 sm:-right-2 bg-white rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3
+                            shadow-float flex items-center gap-2">
+              <span className="text-xl">🌿</span>
               <div>
                 <div className="text-xs font-semibold text-charcoal">Нутриціологія</div>
-                <div className="text-xs text-warm-gray">Доказова медицина</div>
+                <div className="text-[10px] text-warm-gray">Доказова медицина</div>
               </div>
             </div>
-            {/* Patient recovery */}
-            <div className="absolute top-1/2 -right-4 lg:-right-8 bg-coral rounded-2xl p-3 shadow-float text-white text-center -translate-y-1/2">
-              <div className="font-serif text-xl font-bold">98%</div>
-              <div className="text-[10px] opacity-80 leading-tight">Рекомендують<br/>курс</div>
+            {/* Recovery badge */}
+            <div className="absolute top-1/2 -right-3 sm:-right-6 bg-coral rounded-2xl p-2.5 sm:p-3
+                            shadow-float text-white text-center -translate-y-1/2 translate-x-0">
+              <div className="font-serif text-lg sm:text-xl font-bold">98%</div>
+              <div className="text-[9px] sm:text-[10px] opacity-80 leading-tight">Рекомендують<br/>курс</div>
             </div>
           </div>
 

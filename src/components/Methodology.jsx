@@ -51,7 +51,7 @@ export default function Methodology() {
           </div>
 
           {/* Steps */}
-          <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {STEPS.map((s, i) => (
               <div key={s.n}
                    className={`rounded-3xl p-6 border border-cream/10 hover:border-lime/40
