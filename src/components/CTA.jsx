@@ -58,7 +58,7 @@ export default function CTA() {
 
             {/* Pillars */}
             <div className="space-y-2 mt-8">
-              {['Команда піклування про здоров'я', 'Здоров'я — це благополуччя', 'Комплексний підхід до вас'].map(l => (
+              {["Команда піклування про здоров'я", "Здоров'я — це благополуччя", "Комплексний підхід до вас"].map(l => (
                 <div key={l} className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-lime shrink-0"/>
                   <span className="text-cream/60 text-sm">{l}</span>
