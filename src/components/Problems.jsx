@@ -1,83 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../App.jsx';
-import { useScrollAnimation } from '../hooks/useScrollAnimation.js';
 
-const Ecg = ({ className = '' }) => (
-  <svg className={className} viewBox="0 0 120 24" fill="none">
-    <path d="M0,12 H22 L26,3 L30,21 L34,1 L38,23 L42,12 H60 L64,6 L68,18 L72,12 H120"
-          stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const PAINS = [
-  { n: '01', title: 'Постійна втома', body: 'Прокидаєтесь вже знесиленими. Кава рятує на годину — а потім знов нуль енергії.' },
-  { n: '02', title: 'Вага стоїть', body: 'Обмежуєте, тренуєтесь, але цифра на вагах наче приросла. Щось не так.' },
-  { n: '03', title: 'Туман у голові', body: 'Складно зосередитись, тривожність, перепади настрою без очевидних причин.' },
-  { n: '04', title: 'Проблеми з ШКТ', body: 'Здуття, дискомфорт після їжі — щодня, і вже стало звичним фоном.' },
+const ITEMS = [
+  { id: 1, emoji: '😴', title: 'Постійна втома', body: 'Прокидаєтесь знесиленими. Кава не рятує, до вечора — нуль енергії.' },
+  { id: 2, emoji: '⚖️', title: 'Вага, яка не рухається', body: 'Дієти, обмеження, але вага повертається. Щось системно не так.' },
+  { id: 3, emoji: '🧠', title: 'Туман у голові', body: 'Складно зосередитись, тривожність, перепади настрою без причини.' },
+  { id: 4, emoji: '🫃', title: 'Проблеми з травленням', body: 'Здуття, дискомфорт після їжі — щодня і вже стало звичним.' },
 ];
 
 export default function Problems() {
   const { openForm } = useApp();
-  const { ref, isVisible } = useScrollAnimation();
+  const [expanded, setExpanded] = useState(null);
 
   return (
-    <section id="problems" className="py-20 lg:py-32 bg-warm-white">
+    <section id="problems" className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
-        {/* Editorial heading row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-end mb-10 lg:mb-14">
-          <div ref={ref} className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="tag-coral mb-4">Чи знайомо?</p>
-            <h2 className="font-serif text-5xl lg:text-6xl xl:text-7xl font-semibold text-charcoal leading-[1.05]">
-              Ваш надійний<br />
-              <span className="italic">партнер</span><br />
-              у здоров'ї
-            </h2>
-          </div>
-          <div className={`transition-all duration-700 delay-150 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-4xl lg:text-5xl font-serif font-light text-warm-gray mb-3">
-              Візьміть контроль,<br />зробіть здоров'я метою
-            </p>
-            <div className="flex items-center gap-3 mt-5">
-              <Ecg className="w-28 text-coral opacity-60"/>
-              <span className="text-sm text-warm-gray">Наукові методи доказової медицини</span>
-            </div>
-          </div>
-        </div>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {PAINS.map((p, i) => (
-            <div key={p.n}
-                 className={`rounded-3xl p-7 transition-all duration-700 hover:shadow-hover
-                             ${i === 0 ? 'bg-olive text-cream' : i === 2 ? 'bg-lime' : 'bg-white shadow-card'}`}
-                 style={{ transitionDelay: `${i * 80}ms` }}>
-              <div className={`text-5xl font-serif font-bold mb-5 opacity-20 ${i === 0 ? 'text-lime' : i === 2 ? 'text-olive' : 'text-charcoal'}`}>
-                {p.n}
+          {/* Left */}
+          <div>
+            <p className="section-label mb-4">Бібліотека здоров'я</p>
+            <h2 className="display-heading text-4xl md:text-5xl lg:text-6xl mb-6">
+              Ваш надійний<br />партнер у<br />
+              <span className="text-yellow">здоров'ї<span className="text-navy">.</span></span>
+            </h2>
+            <p className="text-muted-dark font-sans text-base leading-relaxed mb-8 max-w-sm">
+              Візьміть контроль, зробіть здоров'я своєю метою.
+              Науково обґрунтований підхід, перевірений роками практики.
+            </p>
+
+            {/* Expandable list */}
+            <div className="space-y-0 border-t border-navy/8">
+              {ITEMS.map(item => (
+                <div key={item.id} className="border-b border-navy/8">
+                  <button
+                    onClick={() => setExpanded(expanded === item.id ? null : item.id)}
+                    className="w-full flex items-center justify-between py-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl w-7">{item.emoji}</span>
+                      <span className="font-sans font-medium text-navy text-sm">{item.title}</span>
+                    </div>
+                    <span className={`w-6 h-6 rounded-full border border-navy/15 flex items-center justify-center
+                                     text-muted text-xs transition-transform duration-200
+                                     ${expanded === item.id ? 'rotate-45' : ''}`}>
+                      +
+                    </span>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${expanded === item.id ? 'max-h-24 pb-4' : 'max-h-0'}`}>
+                    <p className="text-muted-dark text-sm font-sans leading-relaxed pl-10">{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={openForm} className="btn-dark mt-8">
+              → Дослідити курс
+            </button>
+          </div>
+
+          {/* Right — big stat + yellow card */}
+          <div className="flex flex-col gap-5">
+
+            {/* Big stat */}
+            <div className="card p-8">
+              <div className="flex items-start justify-between mb-5">
+                <span className="font-display font-bold text-7xl lg:text-8xl text-navy leading-none">1</span>
+                <span className="pill mt-2">Статистика</span>
               </div>
-              <h3 className={`font-serif text-xl font-semibold mb-3 ${i === 0 ? 'text-cream' : i === 2 ? 'text-olive' : 'text-charcoal'}`}>
-                {p.title}
-              </h3>
-              <p className={`text-sm leading-relaxed ${i === 0 ? 'text-cream/70' : i === 2 ? 'text-olive/70' : 'text-warm-gray'}`}>
-                {p.body}
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="font-display font-bold text-2xl text-yellow">з 5</span>
+                <span className="font-display font-bold text-2xl text-navy">українців</span>
+              </div>
+              <p className="text-muted-dark text-sm font-sans leading-relaxed max-w-xs">
+                відчувають хронічну втому та зниження якості
+                життя через неправильний спосіб харчування
               </p>
             </div>
-          ))}
-        </div>
 
-        {/* Stat + CTA banner */}
-        <div className="bg-olive rounded-3xl px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-baseline gap-4">
-            <span className="font-serif text-7xl font-bold text-lime leading-none">1</span>
-            <span className="font-serif text-3xl text-cream/60 italic">з 5</span>
-            <p className="text-cream text-sm max-w-xs leading-relaxed">
-              українців відчувають хронічну втому та зниження якості життя через
-              неправильний спосіб харчування і режим
-            </p>
+            {/* Yellow explore card */}
+            <div className="card-yellow p-6 flex items-center justify-between">
+              <div>
+                <p className="font-sans text-xs text-navy/60 mb-1">Про курс</p>
+                <p className="font-display font-bold text-xl text-navy">Побудуй систему<br/>здоров'я ✦</p>
+              </div>
+              <button onClick={openForm} className="btn-dark shrink-0">
+                → Старт
+              </button>
+            </div>
+
+            {/* Mini stats row */}
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { v: '500+', l: 'студентів' },
+                { v: '93%',  l: 'досягають мети' },
+                { v: '12+',  l: 'протоколів' },
+              ].map(s => (
+                <div key={s.l} className="card p-4 text-center">
+                  <div className="font-display font-bold text-xl text-navy">{s.v}</div>
+                  <div className="text-[10px] text-muted font-sans mt-0.5 leading-tight">{s.l}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <button onClick={openForm} className="btn-lime shrink-0">
-            Хочу виправити це →
-          </button>
         </div>
       </div>
     </section>
