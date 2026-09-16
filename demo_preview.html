@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Здоров'я як система — Юлія Негрієнко</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#1b2568;-webkit-font-smoothing:antialiased;font-family:'Spectral',Georgia,serif;color:#ECE7D9;overflow-x:hidden;}
+::selection{background:#1b2568;color:#E9E5DB;}
+button{font-family:inherit;cursor:pointer;}
+a{text-decoration:none;}
+input,textarea,select{outline:none;font-family:inherit;}
+
+@keyframes orbitspin{to{transform:rotate(360deg);}}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes pulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:.9;transform:scale(1.2);}}
+@keyframes shimmer{0%{opacity:.4;}50%{opacity:.7;}100%{opacity:.4;}}
+
+@keyframes floatSlow{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-16px) rotate(3deg);}}
+@keyframes floatReverse{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(18px) rotate(-4deg);}}
+@keyframes pulseAura{0%,100%{opacity:.25;transform:scale(1);}50%{opacity:.5;transform:scale(1.08);}}
+.art-float{animation:floatSlow 14s ease-in-out infinite;pointer-events:none;}
+.art-reverse{animation:floatReverse 18s ease-in-out infinite;pointer-events:none;}
+.art-pulse{animation:pulseAura 10s ease-in-out infinite;pointer-events:none;}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .85s cubic-bezier(.2,.6,.2,1),transform .85s cubic-bezier(.2,.6,.2,1);}
+.reveal.visible{opacity:1;transform:none;}
+
+.sec-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;opacity:.5;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.sec-label::after{content:'';flex:1;height:1px;background:currentColor;opacity:.22;}
+
+.card-lift{transition:transform .35s ease,box-shadow .35s ease;}
+.card-lift:hover{transform:translateY(-5px);box-shadow:0 24px 48px rgba(0,0,0,.18);}
+
+.tab-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;border-radius:999px;cursor:pointer;transition:all .3s;border:1px solid rgba(236,231,217,.3);background:transparent;color:#ECE7D9;}
+.tab-btn.active-tab{border-color:#ECE7D9;background:#ECE7D9;color:#1b2568;}
+
+.fi{width:100%;padding:14px 16px;border:1px solid rgba(236,231,217,.3);border-radius:10px;background:rgba(236,231,217,.05);color:#ECE7D9;font-size:15px;}
+.fi::placeholder{color:rgba(236,231,217,.4);}
+.fi:focus{border-color:rgba(236,231,217,.65);}
+.fi option{color:#1b2568;}
+
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(10,14,45,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s ease;}
+.modal-overlay.active{opacity:1;pointer-events:auto;}
+.modal-box{background:#1b2568;color:#ECE7D9;border:1px solid rgba(236,231,217,.25);border-radius:24px;padding:clamp(24px,4vw,40px);max-width:480px;width:100%;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.5);transform:scale(.95);transition:transform .3s ease;}
+.modal-overlay.active .modal-box{transform:scale(1);}
+.modal-close{position:absolute;top:18px;right:22px;background:none;border:none;color:#ECE7D9;font-size:26px;opacity:.6;cursor:pointer;line-height:1;}
+.modal-close:hover{opacity:1;}
+
+#sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:60;padding:14px clamp(20px,5vw,80px);background:rgba(20,28,90,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(236,231,217,.1);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.6,.2,1);}
+#sticky-cta.visible{transform:none;}
+
+.photo-ph{border-radius:50%;background:linear-gradient(135deg,rgba(236,231,217,.15),rgba(236,231,217,.05));border:1px solid rgba(236,231,217,.2);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;color:rgba(236,231,217,.8);flex-shrink:0;}
+
+.tcheck{display:flex;gap:11px;font-size:13.5px;line-height:1.5;font-weight:300;align-items:flex-start;}
+.tcheck-icon{opacity:.65;font-size:13px;flex-shrink:0;padding-top:1px;}
+.tcheck-icon.dim{opacity:.22;}
+
+/* ── Stacked program cards ───────────────────────────────────────────────────── */
+.prog-card{position:sticky;max-width:1160px;margin:0 auto 28px;border-radius:24px;min-height:360px;padding:clamp(28px,4vw,56px);box-shadow:0 12px 36px rgba(27,37,104,0.08);transition:transform .3s,box-shadow .3s;}
+.prog-card:nth-child(1){top:80px;z-index:1;}
+.prog-card:nth-child(2){top:96px;z-index:2;}
+.prog-card:nth-child(3){top:112px;z-index:3;}
+.prog-card:nth-child(4){top:128px;z-index:4;}
+.prog-card:nth-child(5){top:144px;z-index:5;}
+.prog-card:nth-child(6){top:160px;z-index:6;}
+
+/* ── Before / After ──────────────────────────────────────────────────────────── */
+.ba-row{display:flex;gap:clamp(10px,2vw,20px);align-items:stretch;}
+.ba-cell{flex:1;display:flex;gap:12px;align-items:flex-start;padding:16px 0;border-top:1px solid currentColor;font-size:clamp(14px,1.4vw,16px);line-height:1.5;font-weight:300;}
+.ba-icon{font-family:'Space Mono',monospace;font-size:13px;flex-shrink:0;padding-top:2px;}
+
+/* ── Values bar ──────────────────────────────────────────────────────────────── */
+.val-item{flex:1 1 180px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:32px 16px;}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────────── */
+@media(max-width:720px){
+  .nav-link{display:none!important;}
+  #btn-join-h{opacity:1!important;transform:none!important;pointer-events:auto!important;padding:8px 14px!important;font-size:10px!important;}
+  .hero-vert{display:none!important;}
+  .format-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .format-grid>div{padding:22px 18px!important;}
+  .experts-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .experts-grid>div{padding:20px 16px!important;}
+  #sticky-cta{padding:12px 18px!important;}
+  #sticky-cta>span{font-size:13px!important;line-height:1.35!important;}
+  .tab-btn{padding:8px 11px!important;font-size:9.5px!important;}
+  body{padding-bottom:68px;}
+  .prog-card{margin:0 10px;}
+  .ba-row{flex-direction:column;}
+}
+@media(max-width:480px){
+  #site-header{padding:14px 16px!important;}
+  .format-grid{grid-template-columns:1fr!important;}
+  .experts-grid{grid-template-columns:1fr!important;}
+  #sticky-cta{flex-direction:column!important;align-items:center!important;text-align:center!important;padding:14px 16px!important;gap:10px!important;}
+  #sticky-cta>button{width:100%;}
+  .prog-card{border-radius:16px;min-height:auto;}
+  .val-item{flex:1 1 140px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header" style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px clamp(20px,5vw,80px);transition:background .4s,border-color .4s;background:transparent;border-bottom:1px solid transparent;">
+  <button id="btn-top" style="background:none;border:none;display:flex;align-items:center;gap:11px;color:#ECE7D9;">
+    <span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid rgba(236,231,217,.5);border-radius:50%;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;">ЮН</span>
+    <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.8;">Юлія&nbsp;Негрієнко</span>
+  </button>
+  <nav style="display:flex;align-items:center;gap:clamp(14px,2.4vw,28px);">
+    <button class="nav-link" onclick="goTo('program')" style="background:none;border:none;color:#ECE7D9;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;">Програма</button>
+    <button class="nav-link" onclick="goTo('format')" style="background:none;border:none;color:#ECE7D9;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;">Формат</button>
+    <button class="nav-link" onclick="goTo('tariffs')" style="background:none;border:none;color:#ECE7D9;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;">Тарифи</button>
+    <button id="btn-join-h" onclick="goTo('tariffs')" style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 18px;border-radius:999px;border:1px solid rgba(236,231,217,.5);color:#ECE7D9;background:transparent;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .5s,transform .5s;">Долучитися</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="hero" style="position:relative;min-height:100vh;display:flex;align-items:center;padding:90px clamp(20px,5vw,80px) 40px;overflow:hidden;background:#1b2568;">
+  <img src="img/plyami-1.svg" class="art-float" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-8%;left:-10vw;width:min(580px,55vw);opacity:.16;filter:brightness(0) invert(1);pointer-events:none;z-index:0;" />
+  <img src="img/group-2.svg" class="art-reverse" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:2%;right:-6vw;width:min(480px,45vw);opacity:.2;filter:brightness(0) invert(1);pointer-events:none;z-index:0;" />
+  <img src="img/planeti.svg" class="art-float" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:6%;left:-4vw;width:min(340px,32vw);opacity:.22;pointer-events:none;z-index:0;" />
+  <img src="img/circle-1.svg" class="art-reverse" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:4%;right:2vw;width:min(240px,26vw);opacity:.25;pointer-events:none;z-index:0;" />
+  <div class="art-pulse" style="position:absolute;top:20%;left:25%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(236,231,217,.12),transparent 65%);filter:blur(30px);pointer-events:none;"></div>
+  <div class="hero-vert" style="position:absolute;left:clamp(20px,5vw,80px);top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.32em;text-transform:uppercase;opacity:.35;">Онлайн-курс · 2026</div>
+  <div style="width:100%;max-width:1220px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(30px,5vw,70px);">
+    <div class="reveal" style="flex:1 1 340px;">
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:18px;">
+        <p style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.02em;opacity:.6;display:flex;gap:8px;"><span style="opacity:.45;">—</span>Знаєш багато про здоров'я, але все одно не виходить змінити звички?</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.02em;opacity:.6;display:flex;gap:8px;"><span style="opacity:.45;">—</span>Постійно знаходиш нові поради, які суперечать одна одній?</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.02em;opacity:.6;display:flex;gap:8px;"><span style="opacity:.45;">—</span>Хочеш почуватися краще, але не знаєш, із чого справді варто почати?</p>
+      </div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,3.8vw,50px);line-height:1.06;letter-spacing:-.01em;margin-bottom:20px;">Складемо всі твої знання у систему і зробимо турботу про здоров'я легкою, зрозумілою та послідовною</h1>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:26px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Доказові рекомендації від лікарів-практиків</div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Всі сфери життя (сон, харчування, спорт, догляд за собою та ментальне здоров'я) в єдиній системі</div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Індивідуальна підтримка протягом всього курсу</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <button onclick="goTo('tariffs')" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:15px 30px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform .3s,box-shadow .3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 14px 32px rgba(0,0,0,.28)'" onmouseout="this.style.transform='';this.style.boxShadow=''">Обрати формат участі</button>
+        <button onclick="goTo('program')" style="background:none;border:none;color:#ECE7D9;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.65;padding:4px 0;border-bottom:1px solid rgba(236,231,217,.35);cursor:pointer;">Переглянути програму →</button>
+      </div>
+    </div>
+    <div class="reveal" data-delay="140" style="flex:1 1 320px;display:flex;justify-content:center;">
+      <div data-parallax="-0.04" style="position:relative;width:min(390px,78vw);aspect-ratio:1;overflow:visible;">
+        <div style="position:absolute;inset:0;border:1px solid rgba(236,231,217,.14);border-radius:50%;"></div>
+        <div style="position:absolute;inset:13%;border:1px solid rgba(236,231,217,.08);border-radius:50%;animation:orbitspin 70s linear infinite;"></div>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
+          <line x1="50" y1="50" x2="50" y2="6" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
+          <line x1="50" y1="50" x2="91.8" y2="36.4" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
+          <line x1="50" y1="50" x2="75.9" y2="85.6" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
+          <line x1="50" y1="50" x2="24.1" y2="85.6" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
+          <line x1="50" y1="50" x2="8.2" y2="36.4" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
+        </svg>
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);color:#ECE7D9;width:26%;animation:floaty 7s ease-in-out infinite;">
+          <svg viewBox="0 0 60 134" style="display:block;width:100%;filter:drop-shadow(0 8px 22px rgba(0,0,0,.3));"><circle cx="30" cy="19" r="13" fill="currentColor"/><path d="M30 36 C19 36 15 47 15 66 L15 132 L45 132 L45 66 C45 47 41 36 30 36 Z" fill="currentColor"/></svg>
+        </div>
+        <div style="position:absolute;top:5%;left:50%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;opacity:.7;white-space:nowrap;">«Їж правильно!»</div>
+        <div style="position:absolute;top:20%;left:82%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Аналізи!»</div>
+        <div style="position:absolute;top:48%;left:86%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.7;white-space:nowrap;">«Спорт!»</div>
+        <div style="position:absolute;top:78%;left:82%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Не їж цукор!»</div>
+        <div style="position:absolute;top:78%;left:18%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.65;white-space:nowrap;">«Дієта!»</div>
+        <div style="position:absolute;top:48%;left:14%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Пий воду!»</div>
+        <div style="position:absolute;top:20%;left:18%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.7;white-space:nowrap;">«Відпочивай!»</div>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.4;">Гортайте ↓</div>
+</section>
+
+<!-- VALUES BAR -->
+<section style="background:#E9E5DB;color:#1b2568;border-bottom:1px solid rgba(27,37,104,.1);">
+  <div style="max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;">
+    <div class="val-item reveal">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#1b2568" stroke-width="1.5" stroke-linecap="round"><circle cx="18" cy="10" r="5"/><path d="M10 28c0-4.4 3.6-8 8-8s8 3.6 8 8"/><path d="M6 18h4M26 18h4M18 6V2"/></svg>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;opacity:.75;max-width:140px;">Створено лікарями-практиками</span>
+    </div>
+    <div class="val-item reveal" data-delay="60" style="border-left:1px solid rgba(27,37,104,.1);">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#1b2568" stroke-width="1.5" stroke-linecap="round"><path d="M18 4l3 9h9l-7 5 3 9-8-6-8 6 3-9-7-5h9z"/></svg>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;opacity:.75;max-width:140px;">Доказова медицина в основі</span>
+    </div>
+    <div class="val-item reveal" data-delay="120" style="border-left:1px solid rgba(27,37,104,.1);">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#1b2568" stroke-width="1.5" stroke-linecap="round"><circle cx="18" cy="18" r="12"/><path d="M18 12v6l4 2"/></svg>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;opacity:.75;max-width:140px;">Навчання у власному темпі</span>
+    </div>
+    <div class="val-item reveal" data-delay="180" style="border-left:1px solid rgba(27,37,104,.1);">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#1b2568" stroke-width="1.5" stroke-linecap="round"><path d="M8 18l6 6 14-14"/><circle cx="18" cy="18" r="14"/></svg>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;opacity:.75;max-width:140px;">Практичні поради для життя</span>
+    </div>
+    <div class="val-item reveal" data-delay="240" style="border-left:1px solid rgba(27,37,104,.1);">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#1b2568" stroke-width="1.5" stroke-linecap="round"><path d="M6 18s4-10 12-10 12 10 12 10-4 10-12 10S6 18 6 18z"/><circle cx="18" cy="18" r="4"/></svg>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;opacity:.75;max-width:140px;">Системний погляд на здоров'я</span>
+    </div>
+    <div class="val-item reveal" data-delay="300" style="border-left:1px solid rgba(27,37,104,.1);">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#1b2568" stroke-width="1.5" stroke-linecap="round"><path d="M10 10h16v20H10zM14 10V7a4 4 0 018 0v3"/><path d="M14 20h8M14 24h5"/></svg>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;opacity:.75;max-width:140px;">Доступ до матеріалів назавжди</span>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОБЛЕМА -->
+<section id="problem" style="background:#E9E5DB;color:#1b2568;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);position:relative;overflow:hidden;">
+  <img src="img/plyami-1.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-20px;right:-40px;width:min(420px,40vw);opacity:.18;pointer-events:none;z-index:0;" />
+  <div style="max-width:1160px;margin:0 auto;position:relative;z-index:1;">
+    <div class="reveal sec-label" style="color:#1b2568;">Проблема</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4.8vw,64px);line-height:1.05;max-width:20ch;margin-bottom:20px;">Здоров'я — це щоденна система, а не разова дія.</h2>
+    <p class="reveal" data-delay="60" style="max-width:58ch;font-size:clamp(15px,1.2vw,17px);line-height:1.75;opacity:.7;margin-bottom:56px;font-weight:300;">Сон, харчування, рух і психічний стан працюють як єдиний механізм. Збій в одній сфері виснажує інші — і організм компенсує це непомітно, доки наслідки не стають відчутними.</p>
+    <div class="reveal" data-delay="80" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1px;background:rgba(27,37,104,.1);border:1px solid rgba(27,37,104,.1);border-radius:16px;overflow:hidden;">
+      <div style="background:#E9E5DB;padding:34px 30px;display:flex;flex-direction:column;gap:12px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.45;">Чому саме ми?</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(18px,2vw,22px);line-height:1.2;">Доказовий підхід від лікарів-практиків</h3>
+        <p style="font-size:14px;line-height:1.65;font-weight:300;opacity:.74;">Експерти з різних сфер: нутриціологія, спортивна медицина, психотерапія. Перевірено, структуровано, зрозуміло, обґрунтовано.</p>
+      </div>
+      <div style="background:#E9E5DB;padding:34px 30px;display:flex;flex-direction:column;gap:12px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.45;">Чи зможу я це застосувати в житті?</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(18px,2vw,22px);line-height:1.2;">Практичні поради, а не суха теорія.</h3>
+        <p style="font-size:14px;line-height:1.65;font-weight:300;opacity:.74;">Не академічна стаття — реальні рекомендації для щоденного застосування. Пояснюємо доступно, з прикладами.</p>
+      </div>
+      <div style="background:#E9E5DB;padding:34px 30px;display:flex;flex-direction:column;gap:12px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.45;">Що я отримую в результаті?</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(18px,2vw,22px);line-height:1.2;">Попередити, а не лікувати</h3>
+        <p style="font-size:14px;line-height:1.65;font-weight:300;opacity:.74;">Навчишся слідкувати за здоров'ям, щоб краще почуватись сьогодні і в майбутньому</p>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:36px;text-align:center;">
+      <button onclick="goTo('tariffs')" style="background:#1b2568;color:#ECE7D9;border:none;border-radius:999px;padding:16px 36px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform .3s,box-shadow .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">Розпочати трансформацію здоров'я →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ФОРМАТ НАВЧАННЯ — Wheel -->
+<section id="format" style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);position:relative;overflow:hidden;">
+  <img src="img/circle-2.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:10%;left:-4vw;width:min(280px,30vw);opacity:.22;pointer-events:none;z-index:0;" />
+  <img src="img/group-2.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:5%;right:-2vw;width:min(340px,35vw);opacity:.25;pointer-events:none;z-index:0;" />
+  <div data-parallax="0.05" style="position:absolute;bottom:-12%;left:-6%;width:36vw;height:36vw;border-radius:50%;background:radial-gradient(circle,rgba(236,231,217,.04),transparent 70%);pointer-events:none;"></div>
+  <div style="max-width:1160px;margin:0 auto;position:relative;">
+    <div class="reveal sec-label">Формат навчання</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:12px;max-width:14ch;">Як влаштоване навчання</h2>
+    <p class="reveal" data-delay="60" style="max-width:52ch;font-size:15px;line-height:1.75;opacity:.68;margin-bottom:52px;font-weight:300;">Шість форматів взаємодії — вибирайте зручний або поєднуйте всі.</p>
+    <div class="reveal" data-delay="100" style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:clamp(36px,5vw,72px);">
+      <!-- Format Wheel -->
+      <div style="flex:1 1 300px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+        <div style="position:relative;width:min(380px,78vw);aspect-ratio:1;">
+          <div style="position:absolute;inset:14%;border-radius:50%;border:1px solid rgba(236,231,217,.2);">
+            <div id="fw-bg" style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from -30deg,rgba(236,231,217,.2) 0deg 60deg,transparent 60deg 360deg);transition:background .5s ease;"></div>
+            <div style="position:absolute;inset:26%;border-radius:50%;background:#1b2568;border:1px solid rgba(236,231,217,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:3px;padding:8px;">
+              <span id="fw-num" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;opacity:.5;">01</span>
+              <span id="fw-title" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(13px,2vw,17px);line-height:1.1;transition:opacity .3s;">Відео-уроки</span>
+            </div>
+          </div>
+          <div id="fw-nodes"></div>
+        </div>
+        <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.45;text-align:center;animation:shimmer 3s ease infinite;">← Натисніть на елемент →</p>
+      </div>
+      <!-- Format Detail -->
+      <div style="flex:1 1 280px;">
+        <div id="fw-d-num" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-bottom:8px;">01</div>
+        <h3 id="fw-d-title" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(24px,3.2vw,38px);line-height:1.05;margin-bottom:16px;">Відео-уроки</h3>
+        <p id="fw-d-desc" style="font-size:clamp(15px,1.3vw,17px);line-height:1.7;opacity:.75;font-weight:300;margin-bottom:28px;max-width:44ch;">Записані лекції від лікарів-практиків — переглядайте у власному темпі й повертайтесь коли потрібно.</p>
+        <div id="fw-d-meta" style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;padding:12px 0;border-top:1px solid rgba(236,231,217,.18);"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОГРАМА КУРСУ — Stacked cards -->
+<section id="program" style="background:#E9E5DB;color:#1b2568;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px) 0;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <div class="reveal sec-label" style="color:#1b2568;">Програма курсу</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:48px;max-width:16ch;">Шість блоків — одна система</h2>
+  </div>
+</section>
+
+<!-- Stacking cards wrapper -->
+<div style="background:#E9E5DB;padding-bottom:100px;">
+
+  <!-- Card 1 — navy -->
+  <div class="prog-card" style="background:#1b2568;color:#ECE7D9;position:relative;overflow:hidden;">
+    <img src="img/circle-2.svg" class="art-float" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-20px;right:-30px;width:min(280px,30vw);opacity:.25;filter:brightness(0) invert(1);pointer-events:none;z-index:0;" />
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 01</span>
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 1 лекція</span>
+      </div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;margin-bottom:32px;">Вступ</h3>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Організм людини — як він працює?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Що таке здоров'я?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як можна його покращити?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);border-bottom:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як впливає спосіб життя на наш стан?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2 — white -->
+  <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);position:relative;overflow:hidden;">
+    <img src="img/plyami-1.svg" class="art-reverse" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:-80px;left:-100px;width:min(500px,50vw);opacity:.22;pointer-events:none;z-index:0;" />
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 02</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 5 лекцій</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Харчування</h3>
+        </div>
+        <svg width="44" height="44" viewBox="0 0 193 192" fill="currentColor" style="flex-shrink:0;opacity:.85;"><path d="M110.596 56.7033H62.9892C62.2379 56.7033 61.5174 57.0002 60.9861 57.5287C60.4548 58.0572 60.1564 58.774 60.1564 59.5214C60.1564 60.2689 60.4548 60.9857 60.9861 61.5142C61.5174 62.0427 62.2379 62.3396 62.9892 62.3396H110.596C111.348 62.3396 112.068 62.0427 112.6 61.5142C113.131 60.9857 113.429 60.2689 113.429 59.5214C113.429 58.774 113.131 58.0572 112.6 57.5287C112.068 57.0002 111.348 56.7033 110.596 56.7033ZM62.9892 72.4511H89.7468C90.4981 72.4511 91.2187 72.1542 91.7499 71.6257C92.2812 71.0972 92.5796 70.3804 92.5796 69.6329C92.5796 68.8855 92.2812 68.1687 91.7499 67.6402C91.2187 67.1117 90.4981 66.8148 89.7468 66.8148H62.9892C62.2379 66.8148 61.5174 67.1117 60.9861 67.6402C60.4548 68.1687 60.1564 68.8855 60.1564 69.6329C60.1564 70.3804 60.4548 71.0972 60.9861 71.6257C61.5174 72.1542 62.2379 72.4511 62.9892 72.4511ZM48.7324 55.5528L38.3059 66.1889L33.7953 61.8254C33.5297 61.5623 33.2142 61.3541 32.8672 61.2131C32.5201 61.0722 32.1484 61.0011 31.7735 61.0041C31.3986 61.0071 31.0281 61.084 30.6834 61.2305C30.3386 61.377 30.0265 61.5902 29.7652 61.8575C29.5039 62.1249 29.2985 62.4412 29.1609 62.7882C29.0234 63.1351 28.9564 63.5057 28.9639 63.8786C28.9715 64.2514 29.0533 64.6191 29.2047 64.9603C29.3561 65.3014 29.5741 65.6093 29.846 65.8661L36.3842 72.1916C37.4894 73.2614 39.3105 73.2363 40.3867 72.1387L52.7881 59.4877C53.0478 59.2228 53.2525 58.9096 53.3906 58.5659C53.5286 58.2223 53.5972 57.855 53.5926 57.485C53.5879 57.115 53.5101 56.7495 53.3634 56.4094C53.2168 56.0693 53.0042 55.7613 52.738 55.5029C52.4717 55.2446 52.1568 55.0409 51.8114 54.9036C51.466 54.7663 51.0968 54.698 50.7248 54.7026C50.3529 54.7072 49.9855 54.7847 49.6436 54.9306C49.3018 55.0765 48.9922 55.2879 48.7324 55.5528ZM110.596 85.4032H62.9892C62.2379 85.4032 61.5174 85.7001 60.9861 86.2286C60.4548 86.7571 60.1564 87.4739 60.1564 88.2213C60.1564 88.9687 60.4548 89.6855 60.9861 90.214C61.5174 90.7425 62.2379 91.0394 62.9892 91.0394H110.596C111.348 91.0394 112.068 90.7425 112.6 90.214C113.131 89.6855 113.429 88.9687 113.429 88.2213C113.429 87.4739 113.131 86.7571 112.6 86.2286C112.068 85.7001 111.348 85.4032 110.596 85.4032ZM89.7468 95.5147H62.9892C61.4245 95.5147 60.1564 96.7762 60.1564 98.3328C60.1564 99.8895 61.4245 101.151 62.9892 101.151H89.7468C90.4981 101.151 91.2187 100.854 91.7499 100.326C92.2812 99.797 92.5796 99.0802 92.5796 98.3328C92.5796 97.5854 92.2812 96.8686 91.7499 96.3401C91.2187 95.8116 90.4981 95.5147 89.7468 95.5147ZM48.7324 84.2531L38.3059 94.8892L33.7953 90.5257C32.6731 89.4404 30.8803 89.4659 29.7898 90.5816C28.6993 91.6972 28.7242 93.4814 29.846 94.5663L36.3842 100.891C37.4894 101.961 39.3105 101.936 40.3867 100.839L52.7881 88.1879C53.0478 87.923 53.2525 87.6098 53.3906 87.2662C53.5286 86.9226 53.5972 86.5553 53.5926 86.1852C53.5879 85.8152 53.5101 85.4497 53.3634 85.1097C53.2168 84.7696 53.0042 84.4616 52.738 84.2032C52.4717 83.9448 52.1568 83.7412 51.8114 83.6038C51.466 83.4665 51.0968 83.3982 50.7248 83.4029C50.3529 83.4075 49.9855 83.485 49.6436 83.6308C49.3018 83.7767 48.9922 83.9882 48.7324 84.2531ZM48.7324 112.953L38.3059 123.589L33.7953 119.226C32.6739 118.14 30.8803 118.166 29.7898 119.281C28.6993 120.397 28.7242 122.181 29.846 123.266L36.3842 129.591C37.4894 130.661 39.3105 130.636 40.3867 129.538L52.7881 116.888C53.3126 116.353 53.602 115.632 53.5926 114.885C53.5832 114.138 53.2758 113.425 52.738 112.903C52.2001 112.381 51.476 112.093 50.7248 112.103C49.9736 112.112 49.257 112.418 48.7324 112.953ZM48.7324 141.653L38.3059 152.289L33.7953 147.926C33.5297 147.663 33.2142 147.455 32.8672 147.314C32.5201 147.173 32.1484 147.101 31.7735 147.104C31.3986 147.107 31.0281 147.184 30.6834 147.331C30.3386 147.477 30.0265 147.691 29.7652 147.958C29.5039 148.225 29.2985 148.542 29.1609 148.889C29.0234 149.235 28.9564 149.606 28.9639 149.979C28.9715 150.352 29.0533 150.719 29.2047 151.061C29.3561 151.402 29.5741 151.71 29.846 151.966L36.3842 158.292C37.4894 159.362 39.3105 159.337 40.3867 158.239L52.7881 145.588C53.0479 145.324 53.2526 145.01 53.3907 144.667C53.5288 144.323 53.5975 143.956 53.5928 143.586C53.5882 143.215 53.5103 142.85 53.3636 142.51C53.2169 142.17 53.0043 141.862 52.738 141.603C52.4717 141.345 52.1569 141.141 51.8115 141.004C51.466 140.866 51.0968 140.798 50.7248 140.803C50.3528 140.807 49.9854 140.885 49.6436 141.031C49.3017 141.177 48.9921 141.388 48.7324 141.653Z" fill="currentColor"/></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Збалансований раціон без жорстких дієт і заборон</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як читати склад продуктів і не губитись у маркетингу?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Мікро- та макронутрієнти в реальному повсякденному житті</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Харчові звички та емоційне харчування</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Харчування для енергії, відновлення та гарного самопочуття</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3 — navy -->
+  <div class="prog-card" style="background:#1b2568;color:#ECE7D9;position:relative;overflow:hidden;">
+    <img src="img/planeti.svg" class="art-float" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-20px;right:-10px;width:min(280px,30vw);opacity:.25;filter:brightness(0) invert(1);pointer-events:none;z-index:0;" />
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 03</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 2 лекції</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Фізична активність</h3>
+        </div>
+        <svg width="44" height="44" viewBox="0 0 127 253" fill="currentColor" style="flex-shrink:0;opacity:.85;"><path d="M80.6157 46.6908C54.2348 70.5153 84.1912 104.678 111.185 83.2706C137.562 59.4146 107.632 25.2741 80.6157 46.6908ZM105.401 76.3451C87.424 90.6741 69.1138 68.7613 86.405 53.6118C103.822 39.4993 122.967 60.5869 105.401 76.3451ZM126.366 130.022C126.128 127.776 125.441 125.6 124.346 123.624C123.251 121.648 121.77 119.913 119.991 118.52L92.1853 96.6302C91.2434 95.9148 90.0582 95.5982 88.885 95.7485C87.7119 95.8989 86.6448 96.5041 85.9138 97.4339C85.1827 98.3637 84.8463 99.5434 84.977 100.719C85.1077 101.894 85.695 102.972 86.6124 103.718L114.414 125.604C115.238 126.258 115.925 127.069 116.435 127.99C116.945 128.91 117.268 129.923 117.384 130.969C117.501 132.015 117.41 133.074 117.116 134.084C116.822 135.095 116.331 136.038 115.672 136.858L85.1786 174.087L79.9079 160.096L97.0052 139.545C97.6254 138.787 98.0898 137.915 98.3718 136.977C98.6538 136.039 98.7479 135.055 98.6486 134.081C98.5493 133.107 98.2586 132.163 97.7932 131.301C97.3278 130.44 96.6969 129.679 95.9366 129.062L77.5949 114.368C76.3552 113.381 74.8847 112.727 73.322 112.467C71.7594 112.206 70.1561 112.348 68.6636 112.879C67.1711 113.41 65.8385 114.313 64.7915 115.502C63.7445 116.691 63.0178 118.127 62.6798 119.675C59.6859 133.219 65.5203 148.22 70.5431 160.808L96.7482 230.392C97.1953 231.59 97.4 232.864 97.3505 234.141C97.3011 235.418 96.9985 236.673 96.4602 237.832C95.9219 238.991 95.1587 240.031 94.2149 240.893C93.2711 241.755 92.1655 242.421 90.9623 242.851C89.7592 243.282 88.4824 243.47 87.2061 243.403C85.9298 243.337 84.6795 243.017 83.5277 242.463C82.3759 241.91 81.3456 241.133 80.4967 240.177C79.6477 239.222 78.997 238.108 78.5823 236.899L52.9723 161.827C52.6446 160.918 52.035 160.138 51.2325 159.6C50.4299 159.063 49.4765 158.795 48.5114 158.838C47.5462 158.88 46.6198 159.229 45.8674 159.835C45.115 160.441 44.576 161.272 44.329 162.206L26.2442 236.06C25.708 238.107 24.45 239.891 22.702 241.084C20.954 242.277 18.8338 242.798 16.7322 242.551C14.6305 242.304 12.6889 241.305 11.2652 239.74C9.84145 238.174 9.0315 236.147 8.98459 234.031C8.98037 233.548 9.01961 233.065 9.10182 232.588L26.7312 125.559C26.8777 124.401 26.57 123.232 25.8726 122.297C25.1751 121.362 24.1424 120.733 22.9913 120.543C21.8402 120.354 20.6604 120.618 19.6998 121.28C18.7391 121.941 18.0725 122.95 17.8399 124.093L0.219499 231.051C-2.94567 253.297 29.0712 260.196 35.0048 238.211L49.4194 179.335L70.0426 239.789C71.2729 243.306 73.5235 246.376 76.5069 248.608C79.4903 250.84 83.0711 252.132 86.7923 252.319C90.5134 252.506 94.2059 251.58 97.3982 249.659C100.591 247.738 103.138 244.909 104.715 241.534C105.743 239.297 106.314 236.877 106.395 234.417C106.475 231.956 106.064 229.504 105.184 227.205L88.8488 183.835L122.647 142.57C124.076 140.835 125.142 138.83 125.781 136.674C126.42 134.518 126.619 132.256 126.366 130.022ZM74.0284 144.374C70.9586 137.12 70.2303 129.089 71.9453 121.401L89.0066 135.063L76.2693 150.37L74.0284 144.374Z" fill="currentColor"/><path d="M24.495 111.509C25.6747 111.698 26.8813 111.413 27.8511 110.715C28.821 110.017 29.4753 108.964 29.6711 107.785L32.8227 88.4874C32.8227 87.3963 32.9444 36.979 32.8768 35.96C32.862 33.064 33.7851 30.2411 35.5081 27.9134C37.2311 25.5857 39.6614 23.8784 42.4355 23.0468L87.7308 9.37617C88.8526 9.02754 90.0341 8.91288 91.2021 9.0393C92.3701 9.16571 93.4997 9.53051 94.521 10.1111C95.9643 10.956 97.1362 12.1956 97.8988 13.684C98.6615 15.1723 98.9831 16.8476 98.8258 18.5126C98.6686 20.1776 98.039 21.763 97.0112 23.0823C95.9833 24.4016 94.6 25.3998 93.0241 25.9595L60.3669 36.997C57.2735 38.0358 54.6269 40.0986 52.8644 42.8449C51.1018 45.5912 50.3288 48.8565 50.673 52.1015C51.4756 61.8495 52.7741 73.1485 59.8259 80.4843C60.6178 81.3595 61.7214 81.8892 62.8996 81.9597C64.0778 82.0303 65.2367 81.636 66.1274 80.8616C67.0181 80.0871 67.5696 78.9943 67.6635 77.8177C67.7574 76.6412 67.3862 75.4747 66.6296 74.5688C60.8899 68.7705 60.4255 58.8015 59.641 51.114C59.5128 49.9161 59.7985 48.7104 60.4506 47.6973C61.1027 46.6843 62.082 45.925 63.2255 45.5457L95.9503 34.4856C100.344 32.9829 103.972 29.8156 106.054 25.6651C108.136 21.5146 108.506 16.7127 107.084 12.2923C105.662 7.87201 102.561 4.1866 98.4494 2.02901C94.3376 -0.128589 89.5432 -0.585936 85.0976 0.755361L39.8249 14.417C35.1955 15.8024 31.1391 18.6492 28.262 22.5316C25.385 26.414 23.842 31.1233 23.8637 35.9555V87.4008L20.7662 106.338C20.5749 107.518 20.8596 108.726 21.5578 109.696C22.256 110.666 23.3107 111.32 24.4905 111.514L24.495 111.509Z" fill="currentColor"/></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Які бувають види тренувань?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як підібрати собі вид та режим тренування?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Рух як приємна щоденна звичка — без фанатизму</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);border-bottom:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Відновлення та безпечне тренування після паузи</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4 — white -->
+  <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);position:relative;overflow:hidden;">
+    <img src="img/group-2.svg" class="art-reverse" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:-40px;right:-50px;width:min(420px,45vw);opacity:.22;pointer-events:none;z-index:0;" />
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 04</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 2 лекції</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Ментальне здоров'я</h3>
+        </div>
+        <svg width="44" height="44" viewBox="0 0 223 223" fill="currentColor" style="flex-shrink:0;opacity:.85;"><path d="M165.125 214.115C163.522 214.115 162.093 213 161.71 211.362C154.532 178.644 163.383 156.971 171.919 136.03C179.411 117.667 186.484 100.315 182.547 76.1335C175.961 35.5754 153.173 15.8887 112.859 15.8887C76.2731 15.8887 46.5166 45.6452 46.5166 82.2312C46.5166 89.2696 47.5967 96.1687 49.757 102.824C50.0009 103.59 49.9661 104.427 49.6874 105.158L39.3736 131.431C39.06 132.197 39.3388 132.789 39.5478 133.068C39.7569 133.347 40.175 133.87 41.0113 133.87L51.7083 134.218C53.3111 134.253 54.67 135.403 54.9836 136.971L61.36 166.205C62.0084 169.175 63.7355 171.799 66.2072 173.569C68.6788 175.339 71.7193 176.129 74.74 175.787L112.058 171.466C113.208 170.978 120.56 167.389 125.089 152.302C125.37 151.43 125.981 150.702 126.793 150.276C127.604 149.851 128.55 149.761 129.427 150.026C130.304 150.29 131.042 150.889 131.482 151.693C131.922 152.497 132.029 153.441 131.779 154.323C125.612 174.741 114.253 178.121 113.765 178.261L113.242 178.365L75.5414 182.721C70.802 183.284 66.0231 182.056 62.1424 179.278C58.2617 176.499 55.5593 172.371 54.5655 167.703L48.7814 141.117L40.8022 140.838C37.945 140.734 35.3317 139.27 33.7638 136.901C32.1958 134.532 31.8822 131.535 32.9275 128.887L42.7883 103.765C40.6628 96.7959 39.5827 89.5484 39.5827 82.2312C39.5827 41.8124 72.4752 8.91992 112.894 8.91992C156.588 8.91992 182.338 31.1502 189.48 75.0185C193.731 101.116 185.926 120.211 178.4 138.643C170.247 158.609 161.815 179.271 168.539 209.864C168.639 210.31 168.649 210.771 168.57 211.222C168.491 211.672 168.323 212.102 168.077 212.487C167.831 212.873 167.511 213.206 167.136 213.467C166.761 213.728 166.338 213.913 165.891 214.01C165.613 214.08 165.369 214.115 165.125 214.115Z" fill="currentColor"/><path d="M101.849 214.115C101.396 214.115 100.908 214.01 100.455 213.836C98.6779 213.069 97.8765 211.014 98.643 209.237C105.403 193.731 93.7998 179.689 93.3119 179.097C92.0576 177.633 92.2666 175.438 93.7301 174.184C95.1935 172.929 97.3887 173.104 98.643 174.567C99.2702 175.299 113.591 192.477 105.054 211.989C104.462 213.313 103.173 214.115 101.849 214.115ZM102.197 105.263C94.7754 105.263 86.7962 103.799 79.3048 100.733C65.3673 95.0537 57.1441 87.8062 54.8793 79.1998C52.6144 70.6282 57.2487 64.0079 57.9804 63.0323C58.6424 62.0915 63.5902 55.4015 72.0921 53.9032C72.8935 45.6453 77.7019 39.0946 85.6812 35.3315C89.8276 33.3803 95.751 32.6137 102.615 32.8924C102.859 31.7774 103.208 30.7321 103.695 29.7217C105.542 25.8889 110.002 21.3243 120.839 21.2546H121.013C130.908 21.2546 135.821 25.9237 138.33 32.997C139.724 32.3698 141.152 31.882 142.651 31.5684C152.721 29.5126 161.257 34.4256 165.508 44.6696C167.599 49.722 168.47 55.7151 167.912 61.7431C171.989 66.6212 174.742 71.8826 176.031 77.2834C179.132 90.3149 175.474 96.761 171.885 99.8621C167.564 103.59 161.083 104.218 154.532 101.604C150.839 100.141 146.762 97.4231 143.278 93.416C138.574 94.8795 134.009 95.0189 129.619 94.1826L129.096 94.9143C124.079 101.674 113.8 105.263 102.197 105.263ZM63.5205 67.2135C63.3812 67.4226 60.071 71.8478 61.6041 77.5273C63.3115 83.7643 70.3151 89.5484 81.918 94.2871C98.4688 101.047 115.821 98.5381 122.406 92.0223C118.156 90.2801 114.114 87.7714 110.211 84.9142C107.807 87.7714 105.194 89.8271 102.197 90.6982C99.0612 91.639 95.8207 91.1512 92.6151 89.2696C81.7787 82.9281 74.0085 71.8478 72.2663 60.9765C66.8655 62.3703 63.6599 67.0045 63.6251 67.0393C63.6251 67.109 63.5902 67.1787 63.5205 67.2135ZM150.038 90.4543C152.337 92.6843 154.846 94.2174 157.146 95.1582C161.257 96.7959 165.09 96.5868 167.39 94.6007C170.386 91.9874 171.083 86.4473 169.306 78.921C168.679 76.2381 167.564 73.5551 166.031 70.9767C163.627 78.0499 159.062 84.6354 152.128 89.1999C151.396 89.6181 150.7 90.071 150.038 90.4543ZM132.163 87.5275C134.428 87.8062 136.727 87.7365 139.062 87.2835C136.978 83.32 135.688 78.9882 135.264 74.5307C134.637 68.2589 134.428 62.1612 134.218 56.7604C134.079 53.1367 133.94 49.8962 133.731 47.039C133.417 46.8996 133.069 46.7951 132.755 46.6557C128.748 51.7429 125.229 58.5026 121.919 64.9487C123.103 66.5863 124.393 68.2937 125.751 69.9662C131.501 77.144 132.72 83.0326 132.163 87.5275ZM114.253 79.2695C117.877 81.9176 121.535 84.1824 125.299 85.6807C125.368 81.6389 122.894 77.4924 120.351 74.2868C119.758 73.5551 119.131 72.7189 118.434 71.8478C117.006 74.4959 115.647 77.0046 114.253 79.2695ZM140.943 50.2446C141.048 52.3004 141.118 54.4259 141.187 56.5165C141.396 62.0567 141.571 67.8059 142.198 73.8339C142.616 78.1545 143.905 81.8479 145.682 84.8793C146.518 84.4264 147.355 83.9385 148.226 83.381C155.229 78.7468 159.201 71.4296 160.56 63.9382C155.682 58.8859 149.097 54.2168 140.943 50.2446ZM79.4441 61.1507C81.256 69.5829 87.6673 78.259 96.1691 83.2417C98.1552 84.4263 99.4793 84.2521 100.246 84.0082C101.744 83.5901 103.242 82.3706 104.741 80.6284C101.744 78.1196 98.8521 75.5412 96.0646 73.0673C93.3468 70.6282 90.6987 68.2589 88.0854 66.0985C85.1237 63.6246 82.2316 61.9521 79.4441 61.1507ZM79.0608 53.9032C83.5208 54.7046 88.0157 56.9695 92.5454 60.6978C95.2283 62.9278 97.9462 65.3668 100.734 67.8756C103.382 70.2449 106.03 72.6492 108.748 74.914C110.455 72.0568 112.162 68.7815 113.87 65.5062C108.852 58.0496 103.521 48.4328 102.406 39.896C96.4827 39.6521 91.6394 40.2445 88.6429 41.6731C83.1027 44.2515 79.8274 48.4676 79.0608 53.9032ZM109.549 40.5581C110.525 45.4362 113.277 51.6035 117.494 58.3632C120.037 53.4503 122.79 48.5373 125.891 44.2515C120.211 42.4745 114.636 41.255 109.549 40.5581ZM140.316 42.2306C141.361 42.6835 142.442 43.1714 143.452 43.694C150.212 46.9693 156.066 50.6628 160.874 54.7395C160.618 52.1897 159.996 49.69 159.027 47.3178C157.32 43.1714 153.069 36.5162 144.01 38.3629C142.616 38.6417 141.257 39.1992 139.968 39.9309C140.107 40.6975 140.212 41.464 140.316 42.2306ZM109.619 33.5196C116.309 34.3907 123.556 36.0632 130.699 38.5023C131.222 37.9796 131.779 37.457 132.337 36.9692C130.664 30.7321 127.529 28.2234 120.978 28.2234H120.839C115.02 28.2582 111.361 29.7565 109.932 32.7182C109.828 32.997 109.723 33.2409 109.619 33.5196Z" fill="currentColor"/></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Ментальне здоров'я — що це таке?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як підтримати себе в складних ситуаціях?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як допомогти собі при стресі, тривозі та виснаженні?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Практичні поради для щоденного використання</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 5 — navy -->
+  <div class="prog-card" style="background:#1b2568;color:#ECE7D9;position:relative;overflow:hidden;">
+    <img src="img/circle-4.svg" class="art-float" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-20px;right:-20px;width:min(280px,30vw);opacity:.25;filter:brightness(0) invert(1);pointer-events:none;z-index:0;" />
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 05</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 1 лекція</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Сон і відпочинок</h3>
+        </div>
+        <svg width="44" height="44" viewBox="0 0 224 224" fill="currentColor" style="flex-shrink:0;opacity:.85;"><path d="M112 183.26C92.2143 183.471 72.4736 181.33 53.193 176.883C50.523 176.173 47.7181 176.139 45.0317 176.785C42.3454 177.431 39.8624 178.736 37.807 180.583C35.8554 182.378 33.2703 183.325 30.6205 183.215C27.9707 183.105 25.4732 181.946 23.6775 179.995C21.8818 178.043 20.9349 175.458 21.0452 172.808C21.1555 170.158 22.3139 167.661 24.2655 165.865C26.3583 163.865 27.9302 161.383 28.844 158.636C29.7578 155.889 29.986 152.96 29.5085 150.105C27.1707 134.118 27.1707 117.876 29.5085 101.889C29.9845 99.0348 29.7556 96.1079 28.8418 93.3628C27.928 90.6177 26.357 88.1376 24.2655 86.1385C23.298 85.2503 22.5149 84.1802 21.961 82.9893C21.407 81.7985 21.093 80.5101 21.037 79.1979C20.9809 77.8857 21.1839 76.5753 21.6342 75.3416C22.0846 74.1078 22.7736 72.9748 23.6618 72.0073C24.55 71.0398 25.6201 70.2567 26.811 69.7027C28.0018 69.1488 29.2902 68.8348 30.6024 68.7787C31.9146 68.7227 33.225 68.9256 34.4587 69.376C35.6925 69.8263 36.8255 70.5153 37.793 71.4035C39.848 73.2554 42.3328 74.5649 45.0221 75.2134C47.7113 75.8618 50.5198 75.8287 53.193 75.117C72.4738 70.671 92.2145 68.5315 112 68.7435C131.786 68.5315 151.526 70.671 170.807 75.117C173.477 75.8259 176.281 75.8589 178.966 75.213C181.652 74.5671 184.134 73.2627 186.19 71.4175C188.141 69.6213 190.726 68.674 193.377 68.784C196.027 68.8939 198.525 70.0521 200.321 72.0038C202.117 73.9554 203.064 76.5407 202.954 79.1908C202.844 81.8409 201.686 84.3388 199.735 86.135C197.642 88.1347 196.069 90.6158 195.155 93.3622C194.241 96.1086 194.012 99.0369 194.488 101.892C195.655 109.946 196.241 118.072 196.242 126.21C196.269 127.138 196.665 128.017 197.341 128.654C198.017 129.291 198.918 129.633 199.847 129.605C200.775 129.577 201.654 129.182 202.291 128.506C202.927 127.83 203.269 126.928 203.242 126C203.23 117.602 202.622 109.216 201.422 100.905C201.107 99.1814 201.218 97.4071 201.744 95.7359C202.27 94.0647 203.196 92.5472 204.442 91.315C206.71 89.2642 208.38 86.6369 209.275 83.7126C210.169 80.7883 210.254 77.6763 209.521 74.7075C208.788 71.8481 207.329 69.2267 205.285 67.0978C203.24 64.9689 200.68 63.4049 197.853 62.5578C195.025 61.7106 192.027 61.6091 189.148 62.2631C186.27 62.917 183.61 64.3043 181.426 66.29C180.218 67.3448 178.767 68.0826 177.202 68.437C175.638 68.7913 174.011 68.7511 172.466 68.32C152.643 63.7391 132.345 61.5302 112 61.74C91.6542 61.5299 71.3555 63.7375 51.5305 68.3165C49.9835 68.7491 48.3531 68.789 46.7868 68.4327C45.2205 68.0764 43.7677 67.3352 42.56 66.276C40.3757 64.2947 37.7166 62.9113 34.8404 62.2599C31.9642 61.6084 28.9684 61.7111 26.1436 62.5579C23.3187 63.4047 20.7605 64.9669 18.717 67.0931C16.6734 69.2193 15.2138 71.8373 14.4795 74.6935C13.7431 77.6646 13.8262 80.7797 14.7199 83.7073C15.6136 86.6348 17.2844 89.2653 19.5545 91.3185C20.7994 92.5491 21.7254 94.0647 22.2523 95.734C22.7792 97.4032 22.8912 99.1757 22.5785 100.898C20.1516 117.544 20.1516 134.453 22.5785 151.099C22.8919 152.821 22.7807 154.594 22.2544 156.264C21.728 157.934 20.8025 159.45 19.558 160.682C16.2395 163.734 14.2694 167.979 14.081 172.484C13.8926 176.988 15.5014 181.384 18.5535 184.702C21.6056 188.021 25.851 189.991 30.3557 190.179C34.8605 190.367 39.2555 188.759 42.574 185.707C43.7824 184.653 45.2333 183.917 46.7966 183.563C48.3599 183.21 49.9866 183.25 51.5305 183.68C71.3552 188.261 91.654 190.47 112 190.26C115.626 189.844 122.101 191.86 122.43 186.631C121.828 181.353 115.658 183.736 112 183.26Z" fill="currentColor"/><path d="M168 126C159.693 125.999 151.573 128.462 144.665 133.077C137.758 137.691 132.374 144.25 129.195 151.925C126.015 159.599 125.183 168.044 126.803 176.192C128.423 184.339 132.423 191.823 138.297 197.697C144.171 203.571 151.654 207.572 159.802 209.193C167.949 210.814 176.394 209.982 184.069 206.803C191.743 203.625 198.303 198.241 202.918 191.334C207.533 184.427 209.997 176.307 209.997 168C209.985 156.865 205.556 146.189 197.682 138.315C189.808 130.441 179.136 126.012 168 126ZM168 203C161.078 203.001 154.31 200.949 148.554 197.103C142.798 193.258 138.311 187.792 135.662 181.396C133.012 175.001 132.319 167.964 133.669 161.174C135.019 154.384 138.352 148.148 143.247 143.253C148.141 138.357 154.378 135.024 161.167 133.673C167.957 132.322 174.994 133.015 181.39 135.664C187.785 138.313 193.252 142.799 197.098 148.555C200.944 154.31 202.997 161.078 202.997 168C202.986 177.279 199.296 186.176 192.734 192.737C186.173 199.299 177.28 202.99 168 203Z" fill="currentColor"/><path d="M183.022 153.86L162.162 174.72L152.971 165.529C152.648 165.195 152.262 164.928 151.835 164.745C151.408 164.561 150.949 164.465 150.484 164.461C150.019 164.457 149.558 164.545 149.128 164.721C148.698 164.897 148.307 165.157 147.979 165.486C147.65 165.814 147.39 166.205 147.214 166.635C147.038 167.065 146.95 167.526 146.954 167.991C146.958 168.456 147.054 168.915 147.238 169.342C147.421 169.769 147.688 170.155 148.022 170.478L159.688 182.143C160.344 182.8 161.234 183.168 162.162 183.168C163.09 183.168 163.98 182.8 164.637 182.143L187.971 158.812C188.609 158.152 188.961 157.268 188.953 156.351C188.945 155.433 188.577 154.555 187.928 153.906C187.279 153.257 186.402 152.889 185.484 152.881C184.566 152.873 183.682 153.222 183.022 153.86ZM112 44.002H115.549L109.525 50.029C109.037 50.5187 108.705 51.1419 108.571 51.8202C108.437 52.4984 108.506 53.2012 108.771 53.84C109.036 54.4787 109.484 55.0247 110.058 55.4091C110.633 55.7936 111.309 55.9992 112 56H123.998C124.926 56 125.816 55.6312 126.473 54.9749C127.129 54.3185 127.498 53.4283 127.498 52.5C127.498 51.5717 127.129 50.6815 126.473 50.0251C125.816 49.3687 124.926 49 123.998 49H120.449L126.472 42.9765C126.962 42.487 127.295 41.8634 127.43 41.1846C127.565 40.5058 127.496 39.8022 127.231 39.1627C126.966 38.5233 126.518 37.9767 125.942 37.5921C125.367 37.2075 124.69 37.0021 123.998 37.002H112C111.072 37.002 110.182 37.3707 109.525 38.0271C108.869 38.6835 108.5 39.5737 108.5 40.502C108.5 41.4303 108.869 42.3205 109.525 42.9769C110.182 43.6332 111.072 44.002 112 44.002ZM138.996 32.501H148.551L136.521 44.527C136.032 45.0165 135.698 45.6401 135.563 46.3189C135.428 46.9977 135.498 47.7013 135.763 48.3408C136.027 48.9802 136.476 49.5268 137.051 49.9114C137.627 50.296 138.303 50.5014 138.996 50.5015H156.999C157.928 50.5015 158.818 50.1327 159.474 49.4764C160.131 48.82 160.499 47.9298 160.499 47.0015C160.499 46.0732 160.131 45.183 159.474 44.5266C158.818 43.8702 157.928 43.5015 156.999 43.5015H147.444L159.474 31.4755C159.963 30.986 160.297 30.3624 160.432 29.6836C160.567 29.0048 160.497 28.3012 160.232 27.6617C159.968 27.0223 159.519 26.4757 158.944 26.0911C158.368 25.7065 157.692 25.5011 156.999 25.501H138.996C138.067 25.501 137.177 25.8697 136.521 26.5261C135.864 27.1825 135.496 28.0727 135.496 29.001C135.496 29.9293 135.864 30.8195 136.521 31.4759C137.177 32.1322 138.067 32.501 138.996 32.501ZM171.997 21H187.548L169.523 39.025C169.032 39.5143 168.698 40.1382 168.562 40.8176C168.426 41.497 168.495 42.2015 168.76 42.8416C169.025 43.4818 169.474 44.0289 170.051 44.4137C170.627 44.7984 171.304 45.0035 171.997 45.003H195.997C196.925 45.003 197.815 44.6342 198.471 43.9779C199.128 43.3215 199.497 42.4313 199.497 41.503C199.497 40.5747 199.128 39.6845 198.471 39.0281C197.815 38.3717 196.925 38.003 195.997 38.003H180.446L198.471 19.978C198.961 19.4889 199.296 18.8654 199.431 18.1863C199.567 17.5071 199.498 16.803 199.234 16.163C198.969 15.523 198.521 14.9758 197.945 14.5908C197.369 14.2057 196.693 14.0001 196 14H172.001C171.072 14 170.182 14.3687 169.526 15.0251C168.869 15.6815 168.501 16.5717 168.501 17.5C168.501 18.4283 168.869 19.3185 169.526 19.9749C170.182 20.6312 171.072 21 172.001 21H171.997Z" fill="currentColor"/></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як впливає сон на здоров'я?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Що робити, якщо робочий графік не дає висипатись?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);border-bottom:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Чи завжди треба змінювати свої звички і лягати спати як рекомендовано?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 6 — white -->
+  <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);position:relative;overflow:hidden;">
+    <img src="img/circle-1.svg" class="art-reverse" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:-30px;left:-30px;width:min(300px,30vw);opacity:.22;pointer-events:none;z-index:0;" />
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 06</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 3 лекції</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Гігієна тіла, побуту, харчування</h3>
+        </div>
+        <svg width="44" height="44" viewBox="0 0 200 200" fill="currentColor" style="flex-shrink:0;opacity:.85;"><path d="M142.16 128.849C140.913 127.837 139.473 127.089 137.928 126.651C136.383 126.212 134.765 126.093 133.173 126.301L103.915 130.158C103.094 130.266 102.676 129.731 102.533 129.496C102.39 129.261 102.109 128.641 102.581 127.965L106.617 122.185C107.052 121.548 107.219 120.764 107.08 120.005C106.941 119.245 106.508 118.572 105.875 118.13C105.242 117.688 104.46 117.514 103.7 117.645C102.939 117.776 102.261 118.202 101.813 118.831L97.7774 124.611C96.1054 127.006 96.0093 130.044 97.5262 132.54C99.0438 135.036 101.784 136.349 104.681 135.967L133.939 132.11C135.575 131.895 137.179 132.35 138.458 133.391C139.737 134.433 140.507 135.914 140.626 137.559C140.815 140.168 139.304 142.56 136.867 143.51L81.6067 165.052C74.2588 167.916 66.2286 169.01 58.3819 168.214L53.9466 167.764C53.309 167.7 52.668 167.846 52.1212 168.18L19.3501 188.246C18.8053 188.579 18.3844 189.082 18.1515 189.677C17.9185 190.271 17.8864 190.926 18.0599 191.541C18.2335 192.155 18.6032 192.697 19.1127 193.082C19.6223 193.467 20.2438 193.675 20.8826 193.675C21.4217 193.675 21.9504 193.525 22.4096 193.243L54.3381 173.693L57.7901 174.044C66.5555 174.932 75.5264 173.711 83.7341 170.511L109.976 160.282L119.618 191.607C119.802 192.205 120.173 192.729 120.677 193.101C121.181 193.473 121.79 193.674 122.417 193.675C122.875 193.675 123.328 193.568 123.737 193.361C124.147 193.155 124.502 192.855 124.775 192.486C125.047 192.117 125.229 191.689 125.306 191.237C125.383 190.785 125.353 190.321 125.218 189.882L115.45 158.148L138.995 148.97C143.841 147.08 146.845 142.324 146.47 137.136C146.351 135.535 145.908 133.974 145.167 132.549C144.426 131.125 143.403 129.866 142.16 128.849ZM27.114 99.4047L31.5492 95.0222C32.1019 94.476 32.4149 93.7327 32.4196 92.9557C32.4242 92.1788 32.12 91.4318 31.5739 90.8791C31.3035 90.6054 30.9818 90.3876 30.6272 90.2382C30.2727 90.0888 29.8922 90.0108 29.5074 90.0085C29.1227 90.0062 28.7412 90.0797 28.3849 90.2249C28.0286 90.3701 27.7044 90.584 27.4308 90.8545L23.0026 95.2304C18.8793 99.2875 15.7585 104.25 13.8879 109.724L11.9128 115.525L1.15361 123.73C0.844895 123.963 0.585176 124.254 0.389396 124.587C0.193616 124.92 0.0656428 125.288 0.0128422 125.671C-0.0399583 126.054 -0.0165434 126.443 0.0817392 126.817C0.180022 127.19 0.351231 127.541 0.585512 127.848C0.819793 128.155 1.11252 128.413 1.44684 128.607C1.78116 128.8 2.15048 128.926 2.53352 128.976C2.91657 129.026 3.30579 129.001 3.67877 128.9C4.05176 128.799 4.40114 128.626 4.70681 128.389L16.1754 119.642C16.6379 119.29 16.985 118.808 17.1723 118.257L19.4345 111.612C21.0107 107.001 23.6402 102.821 27.114 99.4047ZM180.631 164.939C180.383 164.212 179.86 163.611 179.174 163.266C178.488 162.92 177.694 162.858 176.962 163.092C176.231 163.327 175.621 163.839 175.263 164.519C174.905 165.199 174.829 165.992 175.05 166.727L183.034 191.639C183.151 192.006 183.34 192.346 183.588 192.639C183.837 192.933 184.141 193.175 184.483 193.351C184.826 193.527 185.199 193.634 185.583 193.666C185.966 193.697 186.353 193.653 186.719 193.535C187.459 193.297 188.074 192.776 188.43 192.085C188.785 191.394 188.852 190.591 188.615 189.851L180.631 164.939ZM165.551 106.237C170.012 100.645 173.396 94.2729 175.53 87.4451L183.467 62.1097C183.584 61.7421 183.626 61.3551 183.593 60.9709C183.56 60.5866 183.451 60.2128 183.273 59.8707C183.095 59.5286 182.851 59.225 182.556 58.9774C182.26 58.7298 181.918 58.5429 181.55 58.4277C181.182 58.3124 180.795 58.2709 180.411 58.3056C180.027 58.3402 179.653 58.4504 179.312 58.6298C178.97 58.8091 178.668 59.0541 178.421 59.3507C178.175 59.6473 177.989 59.9896 177.875 60.3581L169.938 85.6935C168.021 91.8314 164.979 97.5594 160.968 102.586L159.1 104.931C157.911 106.422 157.277 108.304 157.314 110.228V110.228C157.33 111.048 158.292 114.441 158.292 114.441C158.482 115.031 158.854 115.547 159.355 115.913C159.856 116.279 160.461 116.476 161.081 116.477C161.358 116.477 161.639 116.437 161.918 116.354L162.057 116.315C162.431 116.208 162.78 116.028 163.083 115.785C163.387 115.542 163.639 115.241 163.825 114.9C164.011 114.559 164.128 114.183 164.167 113.797C164.207 113.41 164.169 113.019 164.056 112.647L163.193 109.802C163.242 109.354 163.407 108.928 163.683 108.582L165.551 106.237ZM5.74551 65.2719C5.74551 70.4521 9.96006 74.6666 15.1403 74.6666C20.3209 74.6666 24.5354 70.4521 24.5354 65.2719C24.5354 60.0913 20.3209 55.8767 15.1403 55.8767C9.96006 55.8771 5.74551 60.0917 5.74551 65.2719ZM18.6755 65.2719C18.6755 67.2211 17.0891 68.8071 15.1399 68.8071C13.1906 68.8071 11.6046 67.2211 11.6046 65.2719C11.6046 63.3222 13.1906 61.7362 15.1399 61.7362C17.0891 61.7362 18.6755 63.3226 18.6755 65.2719ZM189.121 82.7305C183.123 82.7305 178.243 87.6107 178.243 93.6093C178.243 99.6078 183.123 104.488 189.121 104.488C195.12 104.488 200 99.6078 200 93.6093C200 87.6107 195.12 82.7305 189.121 82.7305ZM189.121 98.6285C186.354 98.6285 184.102 96.3769 184.102 93.6093C184.102 90.8416 186.354 88.59 189.121 88.59C191.889 88.59 194.141 90.8416 194.141 93.6093C194.141 96.3769 191.889 98.6285 189.121 98.6285ZM18.5392 36.9466C25.6507 36.9466 31.4367 31.1609 31.4367 24.049C31.4367 16.9371 25.6511 11.1519 18.5392 11.1519C11.4273 11.1519 5.64199 16.9375 5.64199 24.049C5.64199 31.1605 11.4277 36.9466 18.5392 36.9466ZM18.5392 17.0114C22.4201 17.0114 25.5772 20.1685 25.5772 24.0494C25.5772 27.9304 22.4201 31.0875 18.5392 31.0875C14.6582 31.0875 11.5011 27.9304 11.5011 24.0494C11.5011 20.1685 14.6586 17.0114 18.5392 17.0114Z" fill="currentColor"/><path d="M146.563 64.9645L146.985 64.3609H155.813C158.375 64.3609 160.683 62.7429 161.558 60.3347L166.794 45.916C167.888 42.8972 169.706 40.1926 172.087 38.0389C174.469 35.8853 177.342 34.3482 180.456 33.5622C181.752 33.2344 183.075 33.6184 183.994 34.5899C184.913 35.5618 185.223 36.9037 184.823 38.1799L181.617 48.4125C181.388 49.1531 181.462 49.9542 181.823 50.6404C182.183 51.3266 182.801 51.8419 183.541 52.0737C184.28 52.3054 185.082 52.2345 185.769 51.8766C186.457 51.5187 186.974 50.9029 187.209 50.1641L190.415 39.9315C191.458 36.6013 190.649 33.0989 188.251 30.5633C185.853 28.0277 182.401 27.0253 179.018 27.8816C174.977 28.902 171.248 30.8971 168.157 33.6924C165.066 36.4877 162.707 39.9979 161.286 43.9159L156.05 58.3346C156.032 58.3834 156 58.4255 155.957 58.4553C155.915 58.4851 155.864 58.5012 155.813 58.5014H151.076L152.267 56.7951C153.108 55.5881 153.688 54.2181 153.967 52.7735C154.247 51.3289 154.221 49.8417 153.891 48.4078C153.558 46.9744 152.93 45.6265 152.045 44.451C151.16 43.2755 150.038 42.2984 148.753 41.5827C147.653 40.9722 146.452 40.5653 145.208 40.3815C146.538 36.6915 145.541 32.3801 142.407 29.6996C138.475 26.3374 132.613 26.6499 129.062 30.4101L127.304 32.2707C126.705 30.6129 125.695 29.123 124.329 27.921C124.175 27.7847 124.016 27.6554 123.856 27.53C124.068 26.4468 124.141 25.3366 124.066 24.2092C123.634 17.7177 118.405 12.6043 111.9 12.314C109.311 12.1958 106.747 12.8686 104.549 14.243C102.139 11.1999 98.5092 9.42567 94.5525 9.42567C90.0676 9.42567 86.0648 11.7093 83.7714 15.3453L77.658 9.33973C76.6076 8.30942 75.353 7.51052 73.9751 6.99449C72.5972 6.47845 71.1266 6.25672 69.6578 6.34357C68.189 6.43272 66.7551 6.82861 65.4487 7.50573C64.1422 8.18285 62.9921 9.12617 62.0724 10.2749C61.2876 11.2577 60.6865 12.374 60.2982 13.5703C56.8813 11.6449 52.464 11.9113 49.2991 14.5563C45.3302 17.8735 44.663 23.7053 47.7799 27.8335L49.3217 29.875C47.5869 30.1902 45.951 30.9398 44.5384 32.086C40.1309 35.6638 39.3063 42.0534 42.6618 46.6328L48.26 54.2716C46.8417 54.599 45.5158 55.2431 44.3818 56.1557C40.4114 59.3335 39.5805 65.091 42.4896 69.2626L45.2607 73.2358L36.3464 82.0442C35.7938 82.5903 35.4807 83.3336 35.4761 84.1106C35.4715 84.8876 35.7757 85.6346 36.3218 86.1872C36.594 86.4635 36.9184 86.6828 37.2762 86.8323C37.6341 86.9818 38.0181 87.0585 38.4059 87.058C39.1496 87.058 39.8942 86.7763 40.4649 86.2122L96.1197 31.2188C97.5596 29.7961 99.8698 29.7379 101.38 31.0852C101.766 31.4277 102.079 31.8454 102.299 32.3127C102.52 32.7801 102.642 33.2873 102.66 33.8036C102.682 34.3196 102.599 34.8346 102.416 35.3174C102.232 35.8003 101.953 36.2408 101.594 36.6122L75.8739 63.2594C75.6046 63.535 75.3924 63.8611 75.2493 64.2189C75.1062 64.5767 75.0351 64.9592 75.0401 65.3446C75.0451 65.7299 75.126 66.1105 75.2783 66.4645C75.4306 66.8185 75.6512 67.1389 75.9276 67.4075C76.2039 67.6761 76.5305 67.8876 76.8887 68.0298C77.2468 68.1719 77.6296 68.2421 78.0149 68.2361C78.4002 68.2302 78.7805 68.1482 79.1342 67.9951C79.4878 67.8419 79.8077 67.6204 80.0756 67.3434L113.874 32.5747C114.729 31.6943 115.889 31.1766 117.115 31.129C118.34 31.0815 119.537 31.5077 120.457 32.3192C120.94 32.7415 121.333 33.2576 121.61 33.8362C121.888 34.4148 122.045 35.0437 122.073 35.6849C122.104 36.3259 122.006 36.9667 121.782 37.5684C121.559 38.1702 121.216 38.7203 120.773 39.1854L86.0793 75.9182C85.6863 76.3343 85.4237 76.8563 85.3241 77.4199C85.2244 77.9834 85.292 78.5638 85.5185 79.0894C85.745 79.615 86.1204 80.0627 86.5985 80.3773C87.0766 80.692 87.6363 80.8597 88.2086 80.8598C88.6075 80.8604 89.0024 80.7792 89.3687 80.6214C89.7351 80.4635 90.0652 80.2322 90.3387 79.9418L133.321 34.4337C133.996 33.7179 134.921 33.2894 135.903 33.2371C136.886 33.1848 137.85 33.5127 138.598 34.1528C140.18 35.506 140.385 37.9103 139.055 39.5123L99.2358 87.088C98.9877 87.3821 98.7999 87.7221 98.6831 88.0887C98.5664 88.4554 98.5231 88.8414 98.5555 89.2248C98.588 89.6081 98.6957 89.9814 98.8724 90.3231C99.0491 90.6649 99.2914 90.9685 99.5854 91.2167C99.8794 91.4648 100.219 91.6526 100.586 91.7694C100.953 91.8861 101.339 91.9295 101.722 91.8971C102.105 91.8647 102.478 91.757 102.82 91.5804C103.162 91.4037 103.466 91.1614 103.714 90.8674L140.084 47.7715C141.517 46.0742 143.966 45.6257 145.906 46.7047C147.072 47.3531 147.881 48.4266 148.181 49.727C148.482 51.0278 148.226 52.347 147.462 53.4412L108.961 108.589C108.526 109.226 108.359 110.01 108.498 110.769C108.637 111.528 109.07 112.202 109.703 112.644C110.336 113.086 111.118 113.26 111.878 113.129C112.639 112.998 113.317 112.572 113.765 111.943L116.001 108.741C118.519 112.196 122.489 114.504 126.872 114.779C127.191 114.799 127.509 114.809 127.826 114.809C131.556 114.809 135.071 113.423 137.809 110.851C140.739 108.1 142.419 104.219 142.419 100.201C142.419 99.6856 142.392 99.1676 142.338 98.6543C150.616 96.889 156.536 89.6291 156.536 81.0711C156.536 74.0873 152.59 67.9391 146.563 64.9645ZM66.6499 13.9336C67.0545 13.422 67.5633 13.0023 68.1423 12.7021C68.7214 12.402 69.3577 12.2283 70.0089 12.1925C71.3418 12.1125 72.5996 12.5836 73.5516 13.5191L78.4533 18.3349C75.252 19.5279 72.559 21.7681 70.7851 24.635L66.7339 19.8513C65.2983 18.1571 65.2627 15.6684 66.6499 13.9336ZM49.4901 69.0568L47.2959 65.9106C46.1463 64.2617 46.4744 61.9859 48.044 60.73C48.4463 60.4054 48.9108 60.1664 49.4088 60.0277C49.9068 59.889 50.4279 59.8535 50.9401 59.9233C51.4522 59.9892 51.9455 60.1589 52.3897 60.422C52.834 60.6851 53.2199 61.0361 53.5238 61.4535L55.0617 63.5515L49.4901 69.0568ZM59.2751 59.3878L47.3889 43.169C46.6631 42.1803 46.3457 40.95 46.5026 39.7335C46.6595 38.517 47.2786 37.4076 48.2315 36.6353C48.7285 36.229 49.3028 35.928 49.9196 35.7504C50.5364 35.5728 51.1829 35.5223 51.8199 35.6021C52.457 35.6773 53.0722 35.8811 53.6281 36.2013C54.184 36.5215 54.6691 36.9513 55.0539 37.4646L66.3389 52.4075L59.2751 59.3878ZM70.5441 48.2528L60.2548 34.6286L59.7306 33.9348L52.4562 24.3026C51.8628 23.5179 51.5941 22.535 51.7059 21.5576C51.8177 20.5802 52.3013 19.6833 53.0566 19.0528C54.6543 17.7173 57.059 17.9145 58.4181 19.4927L68.5718 31.2828C68.3444 33.7968 68.7459 36.3279 69.7399 38.6481C70.734 40.9684 72.2896 43.005 74.2665 44.5745L70.5441 48.2528ZM109.673 28.4902L107.843 30.3723C107.287 28.9692 106.409 27.716 105.281 26.7132C101.469 23.3112 95.6361 23.4588 92.0013 27.0503L78.4845 40.4061C77.2158 39.546 76.1772 38.388 75.4597 37.0334C74.7422 35.6789 74.3677 34.1692 74.3688 32.6364C74.3688 27.4616 78.5736 23.2506 83.7456 23.2401H83.7776C85.714 23.2401 87.384 22.0174 87.9332 20.1966C88.8063 17.3044 91.5278 15.284 94.5521 15.284C96.9955 15.284 99.21 16.5352 100.476 18.6314C100.796 19.1622 101.226 19.618 101.738 19.9677C102.25 20.3174 102.831 20.5528 103.441 20.658C104.057 20.7628 104.687 20.7339 105.29 20.5734C105.893 20.4128 106.454 20.1243 106.936 19.7275C108.257 18.6448 109.932 18.0888 111.639 18.1665C115.099 18.3208 117.989 21.1451 118.219 24.5963C118.235 24.8346 118.235 25.071 118.228 25.3053C115.149 25.0381 111.987 26.11 109.673 28.4902ZM140.531 93.0335C139.882 93.1375 139.261 93.3695 138.703 93.7161C138.145 94.0627 137.662 94.517 137.281 95.0523C136.904 95.5771 136.635 96.1719 136.489 96.8018C136.344 97.4318 136.326 98.0844 136.436 98.7215C136.518 99.2078 136.56 99.7059 136.56 100.201C136.56 102.643 135.579 104.908 133.799 106.58C132.02 108.25 129.694 109.087 127.24 108.932C123.896 108.721 120.952 106.523 119.703 103.44L143.153 69.8505C147.663 71.6838 150.677 76.0593 150.677 81.0715C150.677 87.0384 146.41 92.0694 140.531 93.0335ZM182.358 147.279C182.357 145.496 181.915 143.741 181.071 142.172C180.438 141 180.272 139.633 180.602 138.32C180.918 137.06 181.053 135.761 181.001 134.463C180.736 127.585 175.151 121.865 168.286 121.439C164.488 121.204 160.884 122.504 158.125 125.098C155.403 127.655 153.843 131.264 153.843 134.997C153.843 139.15 155.706 143.019 158.955 145.613C160.006 146.453 160.697 147.627 160.899 148.915C160.943 149.196 161 149.483 161.068 149.771C162.161 154.321 166.164 157.723 170.802 158.045C171.06 158.063 171.319 158.072 171.578 158.072C174.32 158.072 176.906 157.056 178.927 155.17C180.008 154.159 180.87 152.937 181.46 151.58C182.05 150.223 182.356 148.759 182.358 147.279ZM174.929 150.887C173.919 151.83 172.595 152.295 171.207 152.2C169.094 152.054 167.268 150.492 166.767 148.406C166.735 148.276 166.709 148.144 166.689 148.012C166.259 145.269 164.811 142.791 162.611 141.035C160.763 139.559 159.702 137.358 159.702 134.998C159.702 132.843 160.567 130.844 162.138 129.368C163.566 128.016 165.459 127.266 167.425 127.273C167.591 127.273 167.757 127.278 167.924 127.289C171.823 127.53 174.995 130.781 175.146 134.69C175.176 135.43 175.099 136.171 174.919 136.89V136.891C174.23 139.628 174.584 142.492 175.914 144.956C176.3 145.669 176.501 146.468 176.498 147.279C176.501 147.956 176.363 148.627 176.093 149.248C175.823 149.869 175.427 150.427 174.929 150.887Z" fill="currentColor"/></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.1 Як доглядати за тілом без шкоди: як самостійно підібрати засоби догляду? Коли звертатись до фахівця?</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.2 Гігієна харчування: тривалість зберігання продуктів, миття посуду, побутова хімія</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.3 Гігієна побуту: прибирання, зміна білизни, провітрювання — профілактика алергій і вірусів</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ДО / ПІСЛЯ -->
+<section style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);">
+  <div style="max-width:1160px;margin:0 auto;">
+    <div class="reveal sec-label">Трансформація</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:48px;max-width:16ch;">Що змінюється після курсу</h2>
+    <div class="reveal" data-delay="60" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(236,231,217,.15);border-radius:20px;overflow:hidden;">
+      <!-- Header -->
+      <div style="padding:18px 28px;background:rgba(236,231,217,.07);border-bottom:1px solid rgba(236,231,217,.12);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.55;">До курсу</div>
+      <div style="padding:18px 28px;background:rgba(236,231,217,.12);border-bottom:1px solid rgba(236,231,217,.12);border-left:1px solid rgba(236,231,217,.12);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;">Після курсу</div>
+      <!-- Rows -->
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;opacity:.65;font-weight:300;"><span style="opacity:.5;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✗</span>Складно почати тренуватись, постійно відкладаю</div>
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);border-left:1px solid rgba(236,231,217,.12);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;font-weight:300;background:rgba(236,231,217,.04);"><span style="opacity:.7;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✓</span>Спорт — як приємна рутина, без примусу і провини</div>
+
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;opacity:.65;font-weight:300;"><span style="opacity:.5;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✗</span>Не розумію скільки ккал в тарілці і що взагалі їсти</div>
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);border-left:1px solid rgba(236,231,217,.12);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;font-weight:300;background:rgba(236,231,217,.04);"><span style="opacity:.7;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✓</span>Тарілка збалансована інтуїтивно, без підрахунку</div>
+
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;opacity:.65;font-weight:300;"><span style="opacity:.5;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✗</span>Немає енергії зранку, прокидаюсь вже втомленим</div>
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);border-left:1px solid rgba(236,231,217,.12);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;font-weight:300;background:rgba(236,231,217,.04);"><span style="opacity:.7;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✓</span>Розумієш причини втоми і знаєш як відновлюватись</div>
+
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;opacity:.65;font-weight:300;"><span style="opacity:.5;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✗</span>Психологічно важко пережити стресові ситуації</div>
+      <div style="padding:20px 28px;border-bottom:1px solid rgba(236,231,217,.1);border-left:1px solid rgba(236,231,217,.12);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;font-weight:300;background:rgba(236,231,217,.04);"><span style="opacity:.7;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✓</span>Знаєш, як підтримати себе — і в спокої, і в кризі</div>
+
+      <div style="padding:20px 28px;display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;opacity:.65;font-weight:300;"><span style="opacity:.5;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✗</span>Здоровий спосіб життя — це щось нав'язане і обмежуюче</div>
+      <div style="padding:20px 28px;border-left:1px solid rgba(236,231,217,.12);display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,16px);line-height:1.5;font-weight:300;background:rgba(236,231,217,.04);"><span style="opacity:.7;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">✓</span>Здоровий спосіб життя як норма — не тиск, а свобода</div>
+    </div>
+    <div class="reveal" style="margin-top:38px;text-align:center;">
+      <button onclick="goTo('tariffs')" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:16px 36px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform .3s,box-shadow .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">Приєднатися до курсу →</button>
+    </div>
+  </div>
+</section>
+
+<!-- СПІКЕРИ -->
+<section id="speakers" style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);border-top:1px solid rgba(236,231,217,.08);position:relative;overflow:hidden;">
+  <img src="img/circle-3.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:8%;right:-3vw;width:min(280px,28vw);opacity:.2;pointer-events:none;z-index:0;" />
+  <div style="max-width:1160px;margin:0 auto;position:relative;z-index:1;">
+    <div class="reveal sec-label">Команда курсу</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:44px;max-width:14ch;">Хто веде курс</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <!-- Mentor 1 -->
+      <div class="reveal card-lift" style="border:1px solid rgba(236,231,217,.16);border-radius:20px;padding:20px;background:rgba(236,231,217,.03);display:flex;flex-direction:column;gap:18px;">
+        <div style="width:100%;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:rgba(236,231,217,.08);position:relative;">
+          <img src="img/ivanishcheva.jpg" alt="Іваніщева Марина Леонідівна" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+        </div>
+        <div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,2.4vw,28px);margin-bottom:6px;line-height:1.15;">Іваніщева Марина Леонідівна</h3>
+          <p style="font-family:'Space Mono',monospace;font-size:11px;opacity:.65;margin-bottom:12px;line-height:1.4;">Реабілітолог, масажист</p>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;padding:6px 12px;border:1px solid rgba(236,231,217,.2);border-radius:999px;display:inline-block;">Стаж роботи: 15 років</div>
+        </div>
+      </div>
+      <!-- Mentor 2 -->
+      <div class="reveal card-lift" style="border:1px solid rgba(236,231,217,.16);border-radius:20px;padding:20px;background:rgba(236,231,217,.03);display:flex;flex-direction:column;gap:18px;" data-delay="60">
+        <div style="width:100%;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:rgba(236,231,217,.08);position:relative;">
+          <img src="img/vlasenko.jpg" alt="Власенко Анастасія" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+        </div>
+        <div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,2.4vw,28px);margin-bottom:6px;line-height:1.15;">Власенко Анастасія</h3>
+          <p style="font-family:'Space Mono',monospace;font-size:11px;opacity:.65;margin-bottom:12px;line-height:1.4;">Лікар-дерматолог дитячий і дорослий трихолог, дерматохірург</p>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;padding:6px 12px;border:1px solid rgba(236,231,217,.2);border-radius:999px;">Стаж роботи: 20 років</div>
+            <a href="https://www.instagram.com/likar.vlasenko?igsh=NHl0czFtdWZlejE1" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ECE7D9;opacity:.8;padding:6px 12px;border:1px solid rgba(236,231,217,.35);border-radius:999px;transition:opacity .2s;">Instagram ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- Mentor 3 -->
+      <div class="reveal card-lift" style="border:1px solid rgba(236,231,217,.16);border-radius:20px;padding:20px;background:rgba(236,231,217,.03);display:flex;flex-direction:column;gap:18px;" data-delay="120">
+        <div style="width:100%;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:rgba(236,231,217,.08);position:relative;">
+          <img src="img/negrienko.jpg" alt="Негрієнко Юлія" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+        </div>
+        <div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,2.4vw,28px);margin-bottom:6px;line-height:1.15;">Негрієнко Юлія</h3>
+          <p style="font-family:'Space Mono',monospace;font-size:11px;opacity:.65;margin-bottom:12px;line-height:1.4;">Гастроентеролог, нутриціолог, куратор курсу</p>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;padding:6px 12px;border:1px solid rgba(236,231,217,.2);border-radius:999px;display:inline-block;">Стаж роботи: 20 років</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:#E9E5DB;color:#1b2568;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);">
+  <div style="max-width:960px;margin:0 auto;">
+    <div class="reveal sec-label" style="color:#1b2568;">Питання</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:44px;max-width:16ch;">Що варто знати</h2>
+    <div class="reveal" data-delay="60" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- ТАРИФИ -->
+<section id="tariffs" style="background:#E9E5DB;color:#1b2568;padding:clamp(70px,9vh,110px) clamp(20px,5vw,80px) clamp(100px,14vh,160px);border-top:1px solid rgba(27,37,104,.1);position:relative;overflow:hidden;">
+  <img src="img/plyami-1.svg" class="art-float" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-60px;left:-120px;width:min(650px,60vw);opacity:.35;pointer-events:none;z-index:0;" />
+  <img src="img/group-2.svg" class="art-reverse" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:-40px;right:-80px;width:min(500px,45vw);opacity:.28;pointer-events:none;z-index:0;" />
+  <img src="img/circle-4.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:6%;left:-4vw;width:min(300px,32vw);opacity:.22;pointer-events:none;z-index:0;" />
+  <div style="max-width:1160px;margin:0 auto;position:relative;z-index:1;">
+    <div class="reveal sec-label" style="color:#1b2568;">Тарифи</div>
+    <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:10px;max-width:16ch;">Оберіть свій формат</h2>
+    <p class="reveal" data-delay="50" style="max-width:56ch;font-size:15px;line-height:1.7;opacity:.66;margin-bottom:44px;font-weight:300;">Персональні консультації, підтримка ментора чи самостійне навчання</p>
+    <div class="reveal" data-delay="80" id="tariff-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:stretch;margin-bottom:32px;"></div>
+    
+    <!-- Telegram help banner -->
+    <div class="reveal" style="margin-bottom:44px;border:1px dashed rgba(27,37,104,.25);border-radius:18px;padding:22px 28px;background:rgba(27,37,104,.03);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;">
+      <div>
+        <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;margin-bottom:3px;color:#1b2568;">Сумніваєтесь, який тариф обрати?</h4>
+        <p style="font-size:13.5px;opacity:.7;font-weight:300;color:#1b2568;">Напишіть нашому старшому куратору в Telegram — допоможемо підібрати формат під ваші цілі</p>
+      </div>
+      <a href="https://t.me" target="_blank" rel="noopener" style="background:#1b2568;color:#ECE7D9;padding:12px 22px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;transition:transform .2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''">Написати в Telegram ↗</a>
+    </div>
+    <div class="reveal" style="background:#1b2568;color:#ECE7D9;border-radius:20px;padding:clamp(28px,4vw,50px);">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:32px;">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.55;margin-bottom:8px;">Як вам зручно</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,3vw,34px);">Зробіть наступний крок</h3>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="tab-pay-btn" onclick="setTab('pay')" class="tab-btn active-tab">Оплатити зараз</button>
+          <button id="tab-call-btn" onclick="setTab('call')" class="tab-btn">Передзвоніть мені</button>
+          <button id="tab-req-btn" onclick="setTab('req')" class="tab-btn">Залишити заявку</button>
+        </div>
+      </div>
+      <div id="form-success" style="display:none;padding:36px 0;text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,36px);margin-bottom:10px;">Дякуємо!</div>
+        <p style="opacity:.72;font-weight:300;margin-bottom:22px;">Ми отримали ваші дані і зв'яжемося найближчим часом.</p>
+        <button onclick="resetForm()" style="background:none;border:1px solid rgba(236,231,217,.45);color:#ECE7D9;border-radius:999px;padding:11px 22px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Заповнити ще раз</button>
+      </div>
+      <form id="form-pay" onsubmit="handleSubmit(event)" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Ім'я</label><input type="text" required placeholder="Ваше ім'я" class="fi"/></div>
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Email</label><input type="email" required placeholder="you@email.com" class="fi"/></div>
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Обраний тариф</label><div id="sel-tariff-d" style="padding:14px 16px;border:1px solid rgba(236,231,217,.28);border-radius:10px;font-size:14px;opacity:.85;">З підтримкою — 4 800 ₴</div></div>
+        <button type="submit" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:15px 24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Перейти до оплати →</button>
+      </form>
+      <form id="form-call" onsubmit="handleSubmit(event)" style="display:none;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Ім'я</label><input type="text" required placeholder="Ваше ім'я" class="fi"/></div>
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Телефон</label><input type="tel" required placeholder="+380 __ ___ __ __" class="fi"/></div>
+        <button type="submit" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:15px 24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Передзвоніть мені</button>
+      </form>
+      <form id="form-req" onsubmit="handleSubmit(event)" style="display:none;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Формат</label>
+          <select class="fi"><option>Базовий — 2 500 ₴</option><option selected>З підтримкою — 4 800 ₴</option><option>Персональний — 12 000 ₴</option></select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Зручний час</label><input type="text" placeholder="Напр. будні після 18:00" class="fi"/></div>
+        <div style="display:flex;flex-direction:column;gap:7px;grid-column:1/-1;"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;">Питання (необов'язково)</label><textarea rows="3" placeholder="Що б ви хотіли уточнити?" class="fi" style="resize:vertical;"></textarea></div>
+        <button type="submit" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:15px 24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;justify-self:start;">Надіслати заявку</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- РЕЗУЛЬТАТИ + ВІДГУКИ -->
+<section style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);">
+  <div style="max-width:1160px;margin:0 auto;">
+    <div class="reveal sec-label">Результати</div>
+    <div class="reveal" data-delay="60" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:stretch;margin-bottom:56px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(236,231,217,.14);border:1px solid rgba(236,231,217,.14);border-radius:16px;overflow:hidden;align-self:stretch;">
+        <div style="background:#1b2568;padding:24px 20px;display:flex;flex-direction:column;justify-content:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,52px);line-height:1;">6</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-top:6px;">блоків</div></div>
+        <div style="background:#1b2568;padding:24px 20px;display:flex;flex-direction:column;justify-content:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,52px);line-height:1;">12</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-top:6px;">лекцій</div></div>
+        <div style="background:#1b2568;padding:24px 20px;display:flex;flex-direction:column;justify-content:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,52px);line-height:1;">4</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-top:6px;">воркшопи</div></div>
+        <div style="background:#1b2568;padding:24px 20px;display:flex;flex-direction:column;justify-content:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.8vw,44px);line-height:1.1;">∞</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-top:6px;">доступ назавжди</div></div>
+      </div>
+      <div style="border:1px solid rgba(236,231,217,.16);border-radius:16px;padding:28px 24px;background:rgba(236,231,217,.03);display:flex;flex-direction:column;justify-content:center;gap:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;">Що ви отримаєте:</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:clamp(15px,1.4vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.6;font-family:'Space Mono',monospace;font-size:12px;padding-top:2px;flex-shrink:0;">•</span><span>навчишся зберігати здоровʼя, щоб не лікувати хвороби</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:clamp(15px,1.4vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.6;font-family:'Space Mono',monospace;font-size:12px;padding-top:2px;flex-shrink:0;">•</span><span>зрозуміла система звичок замість хаотичних спроб</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:clamp(15px,1.4vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.6;font-family:'Space Mono',monospace;font-size:12px;padding-top:2px;flex-shrink:0;">•</span><span>прийматимеш рішення про здоровʼя свідомо і без тривог</span></div>
+      </div>
+    </div>
+    <div class="reveal" data-delay="100" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+      <div class="card-lift" style="border:1px solid rgba(236,231,217,.16);border-radius:16px;padding:30px 28px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:44px;line-height:.5;opacity:.35;">"</div>
+        <p style="margin:10px 0 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(16px,1.7vw,20px);line-height:1.55;opacity:.85;">Дякую за цей курс. З перших лекцій дізналася про здорову тарілку. Завдяки лекції про фізичну активність — почала робити зарядку. Для мене, то дуже цінно.</p>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.45;">Олена К. · Учасниця курсу</div>
+      </div>
+      <div class="card-lift" style="border:1px solid rgba(236,231,217,.16);border-radius:16px;padding:30px 28px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:44px;line-height:.5;opacity:.35;">"</div>
+        <p style="margin:10px 0 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(16px,1.7vw,20px);line-height:1.55;opacity:.85;">Дуже корисний, цікавий та пізнавальний курс. Багато цінної інформації про харчування та прості звички. Усе доступно і зрозуміло. Вже застосовую в повсякденному житті.</p>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.45;">Учасниця курсу</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ФІНАЛЬНИЙ CTA -->
+<section style="background:#E9E5DB;color:#1b2568;padding:clamp(90px,14vh,180px) clamp(20px,5vw,80px);text-align:center;">
+  <div class="reveal" style="max-width:700px;margin:0 auto;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,5vw,68px);line-height:1.04;letter-spacing:-.01em;margin-bottom:20px;">Інвестиція, яка лишається з&nbsp;вами назавжди</h2>
+    <p style="max-width:48ch;margin:0 auto 38px;font-size:clamp(15px,1.2vw,17px);line-height:1.7;opacity:.68;font-weight:300;">Не швидкий результат, а здатність розуміти власний організм і дбати про нього усвідомлено — щодня.</p>
+    <button onclick="goTo('tariffs')" style="background:#1b2568;color:#ECE7D9;border:none;border-radius:999px;padding:18px 40px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;transition:transform .3s,box-shadow .3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 16px 36px rgba(27,37,104,.26)'" onmouseout="this.style.transform='';this.style.boxShadow=''">Долучитися до курсу</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#E9E5DB;color:#1b2568;border-top:1px solid rgba(27,37,104,.14);padding:clamp(44px,6vh,70px) clamp(20px,5vw,80px);">
+  <div style="max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;gap:36px;justify-content:space-between;align-items:flex-start;">
+    <div style="flex:1 1 240px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid rgba(27,37,104,.45);border-radius:50%;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;">ЮН</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;">Юлія Негрієнко</span>
+      </div>
+      <p style="max-width:36ch;font-size:13.5px;line-height:1.6;opacity:.6;font-weight:300;">Онлайн-курс про здоровий спосіб життя як цілісну систему. Науковий, спокійний підхід.</p>
+    </div>
+    <div style="display:flex;gap:clamp(32px,5vw,64px);flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.44;">Навігація</span>
+        <button onclick="goTo('program')" style="background:none;border:none;color:#1b2568;font-size:14px;text-align:left;opacity:.7;font-family:'Spectral',serif;">Програма</button>
+        <button onclick="goTo('format')" style="background:none;border:none;color:#1b2568;font-size:14px;text-align:left;opacity:.7;font-family:'Spectral',serif;">Формат</button>
+        <button onclick="goTo('tariffs')" style="background:none;border:none;color:#1b2568;font-size:14px;text-align:left;opacity:.7;font-family:'Spectral',serif;">Тарифи</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.44;">Контакти</span>
+        <a href="https://instagram.com" target="_blank" rel="noopener" style="color:#1b2568;font-size:14px;opacity:.7;font-family:'Spectral',serif;">Instagram</a>
+        <a href="mailto:hello@negrienko.health" style="color:#1b2568;font-size:14px;opacity:.7;font-family:'Spectral',serif;">hello@negrienko.health</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1160px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(27,37,104,.12);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.07em;opacity:.42;">© 2026 Юлія Негрієнко · Усі права захищені</div>
+</footer>
+
+<!-- STICKY CTA -->
+<div id="sticky-cta">
+  <span style="font-family:'Spectral',serif;font-size:15px;font-weight:300;opacity:.85;">Готові побудувати власну систему здоров'я?</span>
+  <button onclick="goTo('tariffs')" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:13px 28px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;transition:transform .25s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''">Долучитися</button>
+</div>
+
+<script>
+// ── Format wheel data ─────────────────────────────────────────────────────────
+const FORMAT_ITEMS = [
+  { short:"Відео", title:"Відео-уроки", desc:"Записані лекції від лікарів-практиків — переглядайте у власному темпі й повертайтесь коли потрібно.", meta:"Доступно назавжди" },
+  { short:"Вебінари", title:"Живі вебінари", desc:"Прямі зустрічі з лекторами, де можна поставити питання і розібрати теми глибше.", meta:"4 воркшопи протягом курсу" },
+  { short:"Матеріали", title:"Текстові матеріали", desc:"Структуровані конспекти до кожної лекції — для повторення і поглиблення у зручний час.", meta:"PDF + конспекти" },
+  { short:"Чек-листи", title:"Чек-листи й анкети", desc:"Практичні інструменти, щоб застосовувати знання і відстежувати свій стан щодня.", meta:"Одразу в застосунку" },
+  { short:"Ментор", title:"Супровід ментора", desc:"Особиста підтримка протягом курсу й відповіді на ваші запитання — тарифи Медіум і Макс.", meta:"Медіум · Макс" },
+  { short:"Спільнота", title:"Telegram-спільнота", desc:"Закрите середовище однодумців, підтримка й обмін досвідом на весь час проходження курсу.", meta:"Активна спільнота" }
+];
+
+const TARIFFS = [
+  { name:"Базовий", price:"2 500 ₴", tagline:"Для тих, хто має напружений графік і хоче навчатися у власному темпі.", rec:false, payUrl:"",
+    features:[
+      {t:"12 лекцій від експертів", on:true},
+      {t:"4 практичних воркшопи", on:true},
+      {t:"Навчальні матеріали та чек-листи", on:true},
+      {t:"Чат учасників на 3 місяці", on:true},
+      {t:"Преміум доступ до застосунку", on:true},
+      {t:"Консультації з ментором", on:false},
+      {t:"Завдання + фідбек", on:false},
+      {t:"Консультації зі спікером", on:false}
+    ]
+  },
+  { name:"З підтримкою", price:"4 800 ₴", tagline:"Для тих, кому важливо мати зворотний зв'язок під час проходження курсу.", rec:true, payUrl:"",
+    features:[
+      {t:"12 лекцій від експертів", on:true},
+      {t:"4 практичних воркшопи", on:true},
+      {t:"Навчальні матеріали та чек-листи", on:true},
+      {t:"Чат учасників на 3 місяці", on:true},
+      {t:"Преміум доступ до застосунку", on:true},
+      {t:"3 консультації з ментором курсу", on:true},
+      {t:"Завдання + фідбек від ментора", on:true},
+      {t:"Консультації зі спікером", on:false}
+    ]
+  },
+  { name:"Персональний", price:"12 000 ₴", tagline:"Для тих, хто хоче додатково попрацювати зі своїми запитами індивідуально.", rec:false, payUrl:"",
+    features:[
+      {t:"12 лекцій від експертів", on:true},
+      {t:"4 практичних воркшопи", on:true},
+      {t:"Навчальні матеріали та чек-листи", on:true},
+      {t:"Чат учасників на 3 місяці", on:true},
+      {t:"Преміум доступ до застосунку", on:true},
+      {t:"3 консультації з ментором курсу", on:true},
+      {t:"Завдання + фідбек від ментора", on:true},
+      {t:"2 консультації зі спікером (на вибір)", on:true}
+    ]
+  }
+];
+
+const FAQS = [
+  { q:"Чи підійде курс, якщо немає діагностованих проблем зі здоров'ям?", a:"Так — і саме для вас він найефективніший. Курс побудований навколо профілактики й розуміння власного організму. Ви навчитесь помічати дисбаланс до того, як він стане проблемою." },
+  { q:"Чи зможу я скористатися цими знаннями на практиці?", a:"Обов'язково. Ми не читаємо суху наукову статтю — ми даємо практичні знання на кожен день. Все пояснюється доступно, із прикладами й конкретними рекомендаціями." },
+  { q:"Якщо я не встигатиму приходити на заняття за графіком?", a:"Пропущені лекції ви зможете переглянути у записі. Додаткові матеріали завжди відкриті для повторного перегляду." },
+  { q:"В чому різниця між пакетом \"З підтримкою\" та \"Персональний\"?", a:"Тариф \"З підтримкою\" включає консультації з ментором, а тариф \"Персональний\" - дає додаткову можливість особисто проконсультуватися зі спікерами курсу." }
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let activeFormat = 0;
+let selectedTariff = "З підтримкою";
+let activeTab = "pay";
+let faqOpen = 0;
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 10, behavior: "smooth" });
+}
+
+// ── Header + Sticky CTA ───────────────────────────────────────────────────────
+const header = document.getElementById("site-header");
+const joinBtn = document.getElementById("btn-join-h");
+const stickyCta = document.getElementById("sticky-cta");
+document.getElementById("btn-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+window.addEventListener("scroll", () => {
+  const sy = window.scrollY;
+  const vh = window.innerHeight;
+  const scrolled = sy > vh * 0.6;
+  header.style.background = scrolled ? "rgba(27,37,104,.82)" : "transparent";
+  header.style.backdropFilter = scrolled ? "blur(12px)" : "none";
+  header.style.webkitBackdropFilter = scrolled ? "blur(12px)" : "none";
+  header.style.borderBottomColor = scrolled ? "rgba(236,231,217,.12)" : "transparent";
+  joinBtn.style.opacity = scrolled ? "1" : "0";
+  joinBtn.style.transform = scrolled ? "translateY(0)" : "translateY(-6px)";
+  joinBtn.style.pointerEvents = scrolled ? "auto" : "none";
+  const tariffEl = document.getElementById("tariffs");
+  const tariffBottom = tariffEl ? tariffEl.getBoundingClientRect().bottom : Infinity;
+  const showCta = sy > vh * 0.9 && tariffBottom > vh * 0.4;
+  stickyCta.classList.toggle("visible", showCta);
+}, { passive: true });
+
+// ── Parallax ──────────────────────────────────────────────────────────────────
+let rafId = null;
+window.addEventListener("scroll", () => {
+  if (rafId) return;
+  rafId = requestAnimationFrame(() => {
+    rafId = null;
+    document.querySelectorAll("[data-parallax]").forEach(el => {
+      const sp = parseFloat(el.getAttribute("data-parallax")) || 0;
+      const r = el.getBoundingClientRect();
+      const c = r.top + r.height / 2 - window.innerHeight / 2;
+      el.style.transform = "translateY(" + (c * sp).toFixed(1) + "px)";
+    });
+  });
+}, { passive: true });
+
+// ── Reveal ────────────────────────────────────────────────────────────────────
+const revEls = Array.from(document.querySelectorAll(".reveal"));
+revEls.forEach(el => { const d = el.getAttribute("data-delay"); if (d) el.style.transitionDelay = d + "ms"; });
+function inView(el) { const r = el.getBoundingClientRect(); return r.top < window.innerHeight * 0.92 && r.bottom > 0; }
+function show(el) { el.classList.add("visible"); }
+revEls.forEach(el => { if (inView(el)) show(el); });
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  revEls.forEach(el => { if (!el.classList.contains("visible")) io.observe(el); });
+}
+setTimeout(() => revEls.forEach(show), 2800);
+
+// ── Format Wheel ──────────────────────────────────────────────────────────────
+function renderFormatWheel() {
+  const R = 44;
+  const cont = document.getElementById("fw-nodes");
+  cont.innerHTML = "";
+  FORMAT_ITEMS.forEach((f, i) => {
+    const ang = (-90 + i * 60) * Math.PI / 180;
+    const top = 50 + R * Math.sin(ang);
+    const left = 50 + R * Math.cos(ang);
+    const active = i === activeFormat;
+    const btn = document.createElement("button");
+    btn.style.cssText = "position:absolute;top:" + top.toFixed(1) + "%;left:" + left.toFixed(1) + "%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;background:none;border:none;padding:6px;";
+    const dotAnim = active ? "animation:pulse 2s ease infinite;" : "";
+    btn.innerHTML =
+      "<span style=\"width:12px;height:12px;border-radius:50%;border:1px solid #ECE7D9;background:" + (active ? "#ECE7D9" : "transparent") + ";transition:background .35s;display:block;" + dotAnim + "\"></span>" +
+      "<span style=\"font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ECE7D9;opacity:" + (active ? "1" : ".42") + ";font-weight:" + (active ? "700" : "400") + ";white-space:nowrap;transition:opacity .3s;\">" + f.short + "</span>";
+    btn.addEventListener("click", () => { activeFormat = i; renderFormatWheel(); renderFormatDetail(); });
+    cont.appendChild(btn);
+  });
+  document.getElementById("fw-bg").style.background =
+    "conic-gradient(from " + (activeFormat * 60 - 30) + "deg, rgba(236,231,217,.22) 0deg 60deg, transparent 60deg 360deg)";
+  document.getElementById("fw-num").textContent = "0" + (activeFormat + 1);
+  document.getElementById("fw-title").textContent = FORMAT_ITEMS[activeFormat].title;
+}
+
+function renderFormatDetail() {
+  const f = FORMAT_ITEMS[activeFormat];
+  const tEl = document.getElementById("fw-d-title");
+  tEl.style.opacity = "0";
+  setTimeout(() => { tEl.style.opacity = "1"; tEl.style.transition = "opacity .4s"; }, 10);
+  document.getElementById("fw-d-num").textContent = "0" + (activeFormat + 1);
+  tEl.textContent = f.title;
+  document.getElementById("fw-d-desc").textContent = f.desc;
+  document.getElementById("fw-d-meta").textContent = f.meta;
+}
+
+renderFormatWheel();
+renderFormatDetail();
+
+function openCheckoutModal(tariffName) {
+  selectedTariff = tariffName || selectedTariff;
+  const t = TARIFFS.find(x => x.name === selectedTariff) || TARIFFS[1];
+  const nameEl = document.getElementById("m-tariff-name");
+  const priceEl = document.getElementById("m-tariff-price");
+  if (nameEl) nameEl.textContent = "Тариф «" + t.name + "»";
+  if (priceEl) priceEl.textContent = t.price;
+  const btnEl = document.getElementById("m-btn-submit");
+  if (btnEl) btnEl.textContent = "Сплатити " + t.price + " через WayForPay →";
+  const modal = document.getElementById("checkout-modal");
+  if (modal) modal.classList.add("active");
+}
+
+function closeCheckoutModal(e) {
+  if (!e || e.target === document.getElementById("checkout-modal") || e.target.classList.contains("modal-close")) {
+    const modal = document.getElementById("checkout-modal");
+    if (modal) modal.classList.remove("active");
+  }
+}
+
+function handleModalPaySubmit(e) {
+  e.preventDefault();
+  const t = TARIFFS.find(x => x.name === selectedTariff);
+  if (t && t.payUrl) {
+    window.open(t.payUrl, '_blank');
+  } else {
+    alert("Дякуємо! Переходимо на сторінку еквайрингу WayForPay для тарифу «" + selectedTariff + "»...");
+  }
+  closeCheckoutModal();
+}
+
+function payTariff(name) {
+  selectedTariff = name;
+  renderTariffs();
+  openCheckoutModal(name);
+}
+
+function renderTariffs() {
+  const cont = document.getElementById("tariff-cards");
+  if (!cont) return;
+  cont.innerHTML = "";
+  TARIFFS.forEach(t => {
+    const sel = t.name === selectedTariff;
+    const card = document.createElement("div");
+    card.style.cssText =
+      "position:relative;text-align:left;border-radius:16px;padding:30px 26px 26px;display:flex;flex-direction:column;gap:16px;cursor:pointer;font-family:inherit;transition:transform .35s ease,box-shadow .35s ease,background .35s ease,color .35s ease;" +
+      "background:" + (sel ? "#1b2568" : "rgba(27,37,104,.04)") + ";" +
+      "color:" + (sel ? "#ECE7D9" : "#1b2568") + ";" +
+      "outline:1px solid " + (sel ? "#1b2568" : "rgba(27,37,104,.2)") + ";" +
+      (sel ? "transform:translateY(-6px);box-shadow:0 22px 44px rgba(27,37,104,.2);" : "");
+    const badge = t.rec ? "<span style=\"position:absolute;top:-11px;left:24px;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;background:#1b2568;color:#ECE7D9;padding:5px 12px;border-radius:999px;\">Оптимальний</span>" : "";
+    const featHtml = t.features.map(f =>
+      "<div class=\"tcheck\"><span class=\"tcheck-icon" + (f.on ? "" : " dim") + "\">" + (f.on ? "✓" : "—") + "</span><span style=\"font-size:13px;line-height:1.45;font-weight:300;opacity:" + (f.on ? ".88" : ".35") + ";\">" + f.t + "</span></div>"
+    ).join("");
+    card.innerHTML =
+      badge +
+      "<span style=\"font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.55;\">" + t.name + "</span>" +
+      "<div style=\"display:flex;align-items:baseline;gap:8px;\"><span style=\"font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,3.8vw,44px);line-height:1;\">" + t.price + "</span></div>" +
+      "<p style=\"font-size:13px;line-height:1.5;opacity:.62;font-weight:300;margin:0;\">" + t.tagline + "</p>" +
+      "<div style=\"height:1px;background:" + (sel ? "rgba(236,231,217,.2)" : "rgba(27,37,104,.14)") + ";margin:2px 0;\"></div>" +
+      "<div style=\"display:flex;flex-direction:column;gap:9px;flex:1;\">" + featHtml + "</div>" +
+      "<button onclick=\"payTariff('" + t.name + "')\" style=\"margin-top:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:14px 18px;text-align:center;border-radius:999px;border:none;cursor:pointer;transition:all .3s;" +
+      (sel ? "background:#ECE7D9;color:#1b2568;box-shadow:0 8px 20px rgba(0,0,0,.15);" : "background:#1b2568;color:#ECE7D9;") + "\">" +
+      (sel ? "✓ Обрано — Оплатити" : "Обрати " + t.name) + "</button>";
+    card.addEventListener("click", () => {
+      selectedTariff = t.name;
+      const selEl = document.getElementById("sel-tariff-d");
+      if (selEl) selEl.textContent = t.name + " — " + t.price;
+      renderTariffs();
+    });
+    cont.appendChild(card);
+  });
+}
+renderTariffs();
+
+// ── FAQ ───────────────────────────────────────────────────────────────────────
+function renderFaq() {
+  const list = document.getElementById("faq-list");
+  list.innerHTML = "";
+  FAQS.forEach((f, i) => {
+    const open = i === faqOpen;
+    const item = document.createElement("div");
+    item.style.borderTop = "1px solid rgba(27,37,104,.18)";
+    item.innerHTML =
+      "<button style=\"width:100%;background:none;border:none;color:#1b2568;display:flex;align-items:flex-start;gap:18px;padding:26px 0;text-align:left;cursor:pointer;\" data-fi=\"" + i + "\">" +
+        "<span style=\"flex:1;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(19px,2.4vw,26px);line-height:1.2;\">" + f.q + "</span>" +
+        "<span style=\"font-family:'Space Mono',monospace;font-size:18px;opacity:.55;line-height:1;flex-shrink:0;padding-top:4px;\">" + (open ? "–" : "+") + "</span>" +
+      "</button>" +
+      (open ? "<p style=\"margin:0 0 26px;max-width:62ch;font-size:15px;line-height:1.75;opacity:.7;font-weight:300;\">" + f.a + "</p>" : "");
+    list.appendChild(item);
+  });
+  const closing = document.createElement("div");
+  closing.style.borderTop = "1px solid rgba(27,37,104,.18)";
+  list.appendChild(closing);
+  list.querySelectorAll("[data-fi]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.getAttribute("data-fi"));
+      faqOpen = faqOpen === idx ? -1 : idx;
+      renderFaq();
+    });
+  });
+}
+renderFaq();
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function setTab(tab) {
+  activeTab = tab;
+  ["pay","call","req"].forEach(t => {
+    const f = document.getElementById("form-" + t);
+    f.style.display = t === tab ? "grid" : "none";
+    document.getElementById("tab-" + t + "-btn").classList.toggle("active-tab", t === tab);
+  });
+}
+setTab("pay");
+
+// ── Form ──────────────────────────────────────────────────────────────────────
+function handleSubmit(e) {
+  e.preventDefault();
+  ["pay","call","req"].forEach(t => { document.getElementById("form-" + t).style.display = "none"; document.getElementById("tab-" + t + "-btn").style.display = "none"; });
+  document.getElementById("form-success").style.display = "block";
+}
+function resetForm() {
+  document.getElementById("form-success").style.display = "none";
+  ["pay","call","req"].forEach(t => { document.getElementById("tab-" + t + "-btn").style.display = ""; });
+  setTab("pay");
+}
+</script>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal" class="modal-overlay" onclick="closeCheckoutModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeCheckoutModal()">&times;</button>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.55;margin-bottom:8px;">Оформлення участі</div>
+    <h3 id="m-tariff-name" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(26px,3.2vw,36px);margin-bottom:4px;">Тариф «З підтримкою»</h3>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:20px;">
+      <span id="m-tariff-price" style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,44px);font-weight:500;">4 800 ₴</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.7;background:rgba(236,231,217,.12);padding:4px 10px;border-radius:999px;">🔒 Оплатити зараз</span>
+    </div>
+    <form id="m-form-pay" onsubmit="handleModalPaySubmit(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;">Ваше ім'я</label>
+        <input type="text" id="m-input-name" required placeholder="Ім'я та прізвище" class="fi" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;">Email (для отримання доступу)</label>
+        <input type="email" id="m-input-email" required placeholder="you@email.com" class="fi" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;">Телефон / Telegram</label>
+        <input type="tel" id="m-input-phone" required placeholder="+380 __ ___ __ __" class="fi" />
+      </div>
+      <button type="submit" id="m-btn-submit" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:16px 24px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-top:8px;box-shadow:0 10px 24px rgba(0,0,0,.25);cursor:pointer;transition:transform .2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform=''">Сплатити через WayForPay →</button>
+      <div style="font-family:'Space Mono',monospace;font-size:9.5px;text-align:center;opacity:.45;line-height:1.5;">🔒 Безпечний еквайринг · Миттєвий доступ у Telegram-чат</div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
