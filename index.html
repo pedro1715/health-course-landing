@@ -55,13 +55,13 @@ input,textarea,select{outline:none;font-family:inherit;}
 .tcheck-icon.dim{opacity:.22;}
 
 /* ── Stacked program cards ───────────────────────────────────────────────────── */
-.prog-card{position:sticky;border-radius:24px;min-height:420px;padding:clamp(32px,5vw,60px);margin:0 clamp(12px,4vw,80px);}
-.prog-card:nth-child(1){top:72px;z-index:1;}
-.prog-card:nth-child(2){top:88px;z-index:2;}
-.prog-card:nth-child(3){top:104px;z-index:3;}
-.prog-card:nth-child(4){top:120px;z-index:4;}
-.prog-card:nth-child(5){top:136px;z-index:5;}
-.prog-card:nth-child(6){top:152px;z-index:6;}
+.prog-card{position:sticky;max-width:1160px;margin:0 auto 28px;border-radius:24px;min-height:360px;padding:clamp(28px,4vw,56px);box-shadow:0 12px 36px rgba(27,37,104,0.08);transition:transform .3s,box-shadow .3s;}
+.prog-card:nth-child(1){top:80px;z-index:1;}
+.prog-card:nth-child(2){top:96px;z-index:2;}
+.prog-card:nth-child(3){top:112px;z-index:3;}
+.prog-card:nth-child(4){top:128px;z-index:4;}
+.prog-card:nth-child(5){top:144px;z-index:5;}
+.prog-card:nth-child(6){top:160px;z-index:6;}
 
 /* ── Before / After ──────────────────────────────────────────────────────────── */
 .ba-row{display:flex;gap:clamp(10px,2vw,20px);align-items:stretch;}
@@ -115,30 +115,29 @@ input,textarea,select{outline:none;font-family:inherit;}
 </header>
 
 <!-- HERO -->
-<section id="hero" style="position:relative;min-height:100vh;display:flex;align-items:center;padding:130px clamp(20px,5vw,80px) 80px;overflow:hidden;background:#1b2568;">
+<section id="hero" style="position:relative;min-height:100vh;display:flex;align-items:center;padding:90px clamp(20px,5vw,80px) 40px;overflow:hidden;background:#1b2568;">
   <div data-parallax="0.05" style="position:absolute;top:-10%;right:-4%;width:44vw;height:44vw;border-radius:50%;background:radial-gradient(circle,rgba(236,231,217,.06),transparent 68%);pointer-events:none;"></div>
   <div class="hero-vert" style="position:absolute;left:clamp(20px,5vw,80px);top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.32em;text-transform:uppercase;opacity:.35;">Онлайн-курс · 2026</div>
-  <div style="width:100%;max-width:1220px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,80px);">
+  <div style="width:100%;max-width:1220px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(30px,5vw,70px);">
     <div class="reveal" style="flex:1 1 340px;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(236,231,217,.1);border:1px solid rgba(236,231,217,.22);padding:7px 16px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;color:#ECE7D9;"><span style="color:#FFC107;">🔥</span> Набір на новий потік · Обмежена кількість місць з ментором</div>
-      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:26px;">
-        <p style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.03em;opacity:.6;display:flex;gap:10px;"><span style="opacity:.45;">—</span>Знаєш багато про здоров'я, але все одно не виходить змінити звички?</p>
-        <p style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.03em;opacity:.6;display:flex;gap:10px;"><span style="opacity:.45;">—</span>Постійно знаходиш нові поради, які суперечать одна одній?</p>
-        <p style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.03em;opacity:.6;display:flex;gap:10px;"><span style="opacity:.45;">—</span>Хочеш почуватися краще, але не знаєш, із чого справді варто почати?</p>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:18px;">
+        <p style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.02em;opacity:.6;display:flex;gap:8px;"><span style="opacity:.45;">—</span>Знаєш багато про здоров'я, але все одно не виходить змінити звички?</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.02em;opacity:.6;display:flex;gap:8px;"><span style="opacity:.45;">—</span>Постійно знаходиш нові поради, які суперечать одна одній?</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.02em;opacity:.6;display:flex;gap:8px;"><span style="opacity:.45;">—</span>Хочеш почуватися краще, але не знаєш, із чого справді варто почати?</p>
       </div>
-      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,4.8vw,64px);line-height:1.05;letter-spacing:-.01em;margin-bottom:26px;">Складемо всі твої знання у систему і зробимо турботу про здоров'я легкою, зрозумілою та послідовною</h1>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:36px;">
-        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Доказові рекомендації від лікарів-практиків</div>
-        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Всі сфери життя (сон, харчування, спорт, догляд за собою та ментальне здоров'я) в єдиній системі</div>
-        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Індивідуальна підтримка протягом всього курсу</div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,3.8vw,50px);line-height:1.06;letter-spacing:-.01em;margin-bottom:20px;">Складемо всі твої знання у систему і зробимо турботу про здоров'я легкою, зрозумілою та послідовною</h1>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:26px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Доказові рекомендації від лікарів-практиків</div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Всі сфери життя (сон, харчування, спорт, догляд за собою та ментальне здоров'я) в єдиній системі</div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:300;opacity:.82;"><span style="font-family:'Space Mono',monospace;font-size:11px;opacity:.5;padding-top:2px;">✓</span>Індивідуальна підтримка протягом всього курсу</div>
       </div>
-      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-        <button onclick="goTo('tariffs')" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:17px 34px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;transition:transform .3s,box-shadow .3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 14px 32px rgba(0,0,0,.28)'" onmouseout="this.style.transform='';this.style.boxShadow=''">Обрати формат участі</button>
-        <button onclick="goTo('program')" style="background:none;border:none;color:#ECE7D9;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;padding:4px 0;border-bottom:1px solid rgba(236,231,217,.35);">Переглянути програму →</button>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <button onclick="goTo('tariffs')" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:15px 30px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform .3s,box-shadow .3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 14px 32px rgba(0,0,0,.28)'" onmouseout="this.style.transform='';this.style.boxShadow=''">Обрати формат участі</button>
+        <button onclick="goTo('program')" style="background:none;border:none;color:#ECE7D9;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.65;padding:4px 0;border-bottom:1px solid rgba(236,231,217,.35);cursor:pointer;">Переглянути програму →</button>
       </div>
     </div>
-    <div class="reveal" data-delay="140" style="flex:1 1 340px;display:flex;justify-content:center;">
-      <div data-parallax="-0.04" style="position:relative;width:min(420px,80vw);aspect-ratio:1;overflow:visible;">
+    <div class="reveal" data-delay="140" style="flex:1 1 320px;display:flex;justify-content:center;">
+      <div data-parallax="-0.04" style="position:relative;width:min(390px,78vw);aspect-ratio:1;overflow:visible;">
         <div style="position:absolute;inset:0;border:1px solid rgba(236,231,217,.14);border-radius:50%;"></div>
         <div style="position:absolute;inset:13%;border:1px solid rgba(236,231,217,.08);border-radius:50%;animation:orbitspin 70s linear infinite;"></div>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
@@ -148,20 +147,20 @@ input,textarea,select{outline:none;font-family:inherit;}
           <line x1="50" y1="50" x2="24.1" y2="85.6" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
           <line x1="50" y1="50" x2="8.2" y2="36.4" stroke="rgba(236,231,217,.18)" stroke-width="0.3"/>
         </svg>
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);color:#ECE7D9;width:28%;animation:floaty 7s ease-in-out infinite;">
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);color:#ECE7D9;width:26%;animation:floaty 7s ease-in-out infinite;">
           <svg viewBox="0 0 60 134" style="display:block;width:100%;filter:drop-shadow(0 8px 22px rgba(0,0,0,.3));"><circle cx="30" cy="19" r="13" fill="currentColor"/><path d="M30 36 C19 36 15 47 15 66 L15 132 L45 132 L45 66 C45 47 41 36 30 36 Z" fill="currentColor"/></svg>
         </div>
-        <div style="position:absolute;top:7%;left:50%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;opacity:.7;white-space:nowrap;">«Їж правильно!»</div>
-        <div style="position:absolute;top:22%;left:80%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Аналізи!»</div>
-        <div style="position:absolute;top:54%;left:84%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.7;white-space:nowrap;">«Спорт!»</div>
-        <div style="position:absolute;top:82%;left:68%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Не їж цукор!»</div>
-        <div style="position:absolute;top:82%;left:32%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.65;white-space:nowrap;">«Дієта!»</div>
-        <div style="position:absolute;top:54%;left:16%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Пий воду!»</div>
-        <div style="position:absolute;top:22%;left:20%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.7;white-space:nowrap;">«Відпочивай!»</div>
+        <div style="position:absolute;top:5%;left:50%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;opacity:.7;white-space:nowrap;">«Їж правильно!»</div>
+        <div style="position:absolute;top:20%;left:82%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Аналізи!»</div>
+        <div style="position:absolute;top:48%;left:86%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.7;white-space:nowrap;">«Спорт!»</div>
+        <div style="position:absolute;top:78%;left:82%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Не їж цукор!»</div>
+        <div style="position:absolute;top:78%;left:18%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.65;white-space:nowrap;">«Дієта!»</div>
+        <div style="position:absolute;top:48%;left:14%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:9.5px;opacity:.65;white-space:nowrap;">«Пий воду!»</div>
+        <div style="position:absolute;top:20%;left:18%;transform:translate(-50%,-50%);font-family:'Space Mono',monospace;font-size:10px;opacity:.7;white-space:nowrap;">«Відпочивай!»</div>
       </div>
     </div>
   </div>
-  <div style="position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.4;">Гортайте ↓</div>
+  <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.4;">Гортайте ↓</div>
 </section>
 
 <!-- VALUES BAR -->
@@ -284,8 +283,8 @@ input,textarea,select{outline:none;font-family:inherit;}
     </div>
   </div>
 
-  <!-- Card 2 — cream -->
-  <div class="prog-card" style="background:#E9E5DB;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
+  <!-- Card 2 — white -->
+  <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
     <div style="max-width:900px;margin:0 auto;">
       <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
         <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 02</span>
@@ -319,8 +318,8 @@ input,textarea,select{outline:none;font-family:inherit;}
     </div>
   </div>
 
-  <!-- Card 4 — cream -->
-  <div class="prog-card" style="background:#E9E5DB;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
+  <!-- Card 4 — white -->
+  <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
     <div style="max-width:900px;margin:0 auto;">
       <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
         <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 04</span>
@@ -352,8 +351,8 @@ input,textarea,select{outline:none;font-family:inherit;}
     </div>
   </div>
 
-  <!-- Card 6 — cream -->
-  <div class="prog-card" style="background:#E9E5DB;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
+  <!-- Card 6 — white -->
+  <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
     <div style="max-width:900px;margin:0 auto;">
       <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
         <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 06</span>
@@ -363,6 +362,10 @@ input,textarea,select{outline:none;font-family:inherit;}
       <div style="display:flex;flex-direction:column;">
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.1 Як доглядати за тілом без шкоди: як самостійно підібрати засоби догляду? Коли звертатись до фахівця?</span></div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.2 Гігієна харчування: тривалість зберігання продуктів, миття посуду, побутова хімія</span></div>
+        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.3 Гігієна побуту: прибирання, зміна білизни, провітрювання — профілактика алергій і вірусів</span></div>
+      </div>
+    </div>
+  </div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.3 Гігієна побуту: прибирання, зміна білизни, провітрювання — профілактика алергій і вірусів</span></div>
       </div>
     </div>
@@ -585,7 +588,7 @@ input,textarea,select{outline:none;font-family:inherit;}
 
 <!-- STICKY CTA -->
 <div id="sticky-cta">
-  <span style="font-family:'Spectral',serif;font-size:15px;font-weight:300;opacity:.85;">Як вам зручно — зробіть наступний крок</span>
+  <span style="font-family:'Spectral',serif;font-size:15px;font-weight:300;opacity:.85;">Готові побудувати власну систему здоров'я?</span>
   <button onclick="goTo('tariffs')" style="background:#ECE7D9;color:#1b2568;border:none;border-radius:999px;padding:13px 28px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;transition:transform .25s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''">Долучитися</button>
 </div>
 
