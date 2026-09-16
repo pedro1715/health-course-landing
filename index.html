@@ -116,6 +116,8 @@ input,textarea,select{outline:none;font-family:inherit;}
 
 <!-- HERO -->
 <section id="hero" style="position:relative;min-height:100vh;display:flex;align-items:center;padding:90px clamp(20px,5vw,80px) 40px;overflow:hidden;background:#1b2568;">
+  <img src="img/planeti.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:6%;left:-4vw;width:min(340px,32vw);opacity:.22;pointer-events:none;z-index:0;" />
+  <img src="img/circle-1.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:4%;right:2vw;width:min(240px,26vw);opacity:.25;pointer-events:none;z-index:0;" />
   <div data-parallax="0.05" style="position:absolute;top:-10%;right:-4%;width:44vw;height:44vw;border-radius:50%;background:radial-gradient(circle,rgba(236,231,217,.06),transparent 68%);pointer-events:none;"></div>
   <div class="hero-vert" style="position:absolute;left:clamp(20px,5vw,80px);top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.32em;text-transform:uppercase;opacity:.35;">Онлайн-курс · 2026</div>
   <div style="width:100%;max-width:1220px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(30px,5vw,70px);">
@@ -194,8 +196,9 @@ input,textarea,select{outline:none;font-family:inherit;}
 </section>
 
 <!-- ПРОБЛЕМА -->
-<section style="background:#E9E5DB;color:#1b2568;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);">
-  <div style="max-width:1160px;margin:0 auto;">
+<section id="problem" style="background:#E9E5DB;color:#1b2568;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);position:relative;overflow:hidden;">
+  <img src="img/plyami-1.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:-20px;right:-40px;width:min(420px,40vw);opacity:.18;pointer-events:none;z-index:0;" />
+  <div style="max-width:1160px;margin:0 auto;position:relative;z-index:1;">
     <div class="reveal sec-label" style="color:#1b2568;">Проблема</div>
     <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4.8vw,64px);line-height:1.05;max-width:20ch;margin-bottom:20px;">Здоров'я — це щоденна система, а не разова дія.</h2>
     <p class="reveal" data-delay="60" style="max-width:58ch;font-size:clamp(15px,1.2vw,17px);line-height:1.75;opacity:.7;margin-bottom:56px;font-weight:300;">Сон, харчування, рух і психічний стан працюють як єдиний механізм. Збій в одній сфері виснажує інші — і організм компенсує це непомітно, доки наслідки не стають відчутними.</p>
@@ -224,6 +227,8 @@ input,textarea,select{outline:none;font-family:inherit;}
 
 <!-- ФОРМАТ НАВЧАННЯ — Wheel -->
 <section id="format" style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);position:relative;overflow:hidden;">
+  <img src="img/circle-2.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:10%;left:-4vw;width:min(280px,30vw);opacity:.22;pointer-events:none;z-index:0;" />
+  <img src="img/group-2.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:5%;right:-2vw;width:min(340px,35vw);opacity:.25;pointer-events:none;z-index:0;" />
   <div data-parallax="0.05" style="position:absolute;bottom:-12%;left:-6%;width:36vw;height:36vw;border-radius:50%;background:radial-gradient(circle,rgba(236,231,217,.04),transparent 70%);pointer-events:none;"></div>
   <div style="max-width:1160px;margin:0 auto;position:relative;">
     <div class="reveal sec-label">Формат навчання</div>
@@ -286,11 +291,16 @@ input,textarea,select{outline:none;font-family:inherit;}
   <!-- Card 2 — white -->
   <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
     <div style="max-width:900px;margin:0 auto;">
-      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 02</span>
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 5 лекцій</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 02</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 5 лекцій</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Харчування</h3>
+        </div>
+        <img src="img/harchuvannya.svg" loading="lazy" decoding="async" alt="Харчування" style="width:48px;height:48px;object-fit:contain;flex-shrink:0;opacity:.9;" />
       </div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;margin-bottom:32px;">Харчування</h3>
       <div style="display:flex;flex-direction:column;">
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Збалансований раціон без жорстких дієт і заборон</span></div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як читати склад продуктів і не губитись у маркетингу?</span></div>
@@ -304,11 +314,16 @@ input,textarea,select{outline:none;font-family:inherit;}
   <!-- Card 3 — navy -->
   <div class="prog-card" style="background:#1b2568;color:#ECE7D9;">
     <div style="max-width:900px;margin:0 auto;">
-      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 03</span>
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 2 лекції</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 03</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 2 лекції</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Фізична активність</h3>
+        </div>
+        <img src="img/fizichna-aktivnist.svg" loading="lazy" decoding="async" alt="Фізична активність" style="width:48px;height:48px;object-fit:contain;flex-shrink:0;filter:brightness(0) invert(1);opacity:.85;" />
       </div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;margin-bottom:32px;">Фізична активність</h3>
       <div style="display:flex;flex-direction:column;">
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Які бувають види тренувань?</span></div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як підібрати собі вид та режим тренування?</span></div>
@@ -321,11 +336,16 @@ input,textarea,select{outline:none;font-family:inherit;}
   <!-- Card 4 — white -->
   <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
     <div style="max-width:900px;margin:0 auto;">
-      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 04</span>
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 2 лекції</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 04</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 2 лекції</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Ментальне здоров'я</h3>
+        </div>
+        <img src="img/mentalne-zdorovya.svg" loading="lazy" decoding="async" alt="Ментальне здоров'я" style="width:48px;height:48px;object-fit:contain;flex-shrink:0;opacity:.9;" />
       </div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;margin-bottom:32px;">Ментальне здоров'я</h3>
       <div style="display:flex;flex-direction:column;">
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Ментальне здоров'я — що це таке?</span></div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як підтримати себе в складних ситуаціях?</span></div>
@@ -338,11 +358,16 @@ input,textarea,select{outline:none;font-family:inherit;}
   <!-- Card 5 — navy -->
   <div class="prog-card" style="background:#1b2568;color:#ECE7D9;">
     <div style="max-width:900px;margin:0 auto;">
-      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 05</span>
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 1 лекція</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 05</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 1 лекція</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Сон і відпочинок</h3>
+        </div>
+        <img src="img/son.svg" loading="lazy" decoding="async" alt="Сон і відпочинок" style="width:48px;height:48px;object-fit:contain;flex-shrink:0;filter:brightness(0) invert(1);opacity:.85;" />
       </div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;margin-bottom:32px;">Сон і відпочинок</h3>
       <div style="display:flex;flex-direction:column;">
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Як впливає сон на здоров'я?</span></div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(236,231,217,.15);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>Що робити, якщо робочий графік не дає висипатись?</span></div>
@@ -354,18 +379,19 @@ input,textarea,select{outline:none;font-family:inherit;}
   <!-- Card 6 — white -->
   <div class="prog-card" style="background:#FFFFFF;color:#1b2568;border:1px solid rgba(27,37,104,.12);">
     <div style="max-width:900px;margin:0 auto;">
-      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;">
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 06</span>
-        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 3 лекції</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;opacity:.5;">Блок 06</span>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;opacity:.4;">· 3 лекції</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;">Гігієна тіла, побуту, харчування</h3>
+        </div>
+        <img src="img/gigiena.svg" loading="lazy" decoding="async" alt="Гігієна" style="width:48px;height:48px;object-fit:contain;flex-shrink:0;opacity:.9;" />
       </div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,52px);line-height:1.04;margin-bottom:32px;">Гігієна тіла, побуту, харчування</h3>
       <div style="display:flex;flex-direction:column;">
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.1 Як доглядати за тілом без шкоди: як самостійно підібрати засоби догляду? Коли звертатись до фахівця?</span></div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.2 Гігієна харчування: тривалість зберігання продуктів, миття посуду, побутова хімія</span></div>
-        <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.3 Гігієна побуту: прибирання, зміна білизни, провітрювання — профілактика алергій і вірусів</span></div>
-      </div>
-    </div>
-  </div>
         <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(27,37,104,.12);border-bottom:1px solid rgba(27,37,104,.12);font-size:clamp(15px,1.5vw,17px);line-height:1.5;font-weight:300;"><span style="opacity:.4;font-family:'Space Mono',monospace;font-size:11px;padding-top:2px;flex-shrink:0;">→</span><span>6.3 Гігієна побуту: прибирання, зміна білизни, провітрювання — профілактика алергій і вірусів</span></div>
       </div>
     </div>
@@ -404,8 +430,9 @@ input,textarea,select{outline:none;font-family:inherit;}
 </section>
 
 <!-- СПІКЕРИ -->
-<section id="speakers" style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);border-top:1px solid rgba(236,231,217,.08);">
-  <div style="max-width:1160px;margin:0 auto;">
+<section id="speakers" style="background:#1b2568;color:#ECE7D9;padding:clamp(80px,11vh,140px) clamp(20px,5vw,80px);border-top:1px solid rgba(236,231,217,.08);position:relative;overflow:hidden;">
+  <img src="img/circle-3.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;top:8%;right:-3vw;width:min(280px,28vw);opacity:.2;pointer-events:none;z-index:0;" />
+  <div style="max-width:1160px;margin:0 auto;position:relative;z-index:1;">
     <div class="reveal sec-label">Команда курсу</div>
     <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:44px;max-width:14ch;">Хто веде курс</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
@@ -462,8 +489,9 @@ input,textarea,select{outline:none;font-family:inherit;}
 </section>
 
 <!-- ТАРИФИ -->
-<section id="tariffs" style="background:#E9E5DB;color:#1b2568;padding:clamp(70px,9vh,110px) clamp(20px,5vw,80px) clamp(100px,14vh,160px);border-top:1px solid rgba(27,37,104,.1);">
-  <div style="max-width:1160px;margin:0 auto;">
+<section id="tariffs" style="background:#E9E5DB;color:#1b2568;padding:clamp(70px,9vh,110px) clamp(20px,5vw,80px) clamp(100px,14vh,160px);border-top:1px solid rgba(27,37,104,.1);position:relative;overflow:hidden;">
+  <img src="img/circle-4.svg" loading="lazy" decoding="async" alt="" aria-hidden="true" style="position:absolute;bottom:6%;left:-4vw;width:min(300px,32vw);opacity:.22;pointer-events:none;z-index:0;" />
+  <div style="max-width:1160px;margin:0 auto;position:relative;z-index:1;">
     <div class="reveal sec-label" style="color:#1b2568;">Тарифи</div>
     <h2 class="reveal" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.2vw,56px);line-height:1.05;margin-bottom:10px;max-width:16ch;">Оберіть свій формат</h2>
     <p class="reveal" data-delay="50" style="max-width:56ch;font-size:15px;line-height:1.7;opacity:.66;margin-bottom:44px;font-weight:300;">Персональні консультації, підтримка ментора чи самостійне навчання</p>
